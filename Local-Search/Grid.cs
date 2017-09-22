@@ -17,8 +17,8 @@ namespace Local_Search
         //Grid construct
         public Grid(int n)
         {
-            int i = 0;
-            int j = 0;
+            int row = 0;
+            int col = 0;
             Random rand = new Random();
             //number of rows
             rowNum = n;
@@ -28,20 +28,20 @@ namespace Local_Search
             cells = new CellNode[rowNum,colNum];
 
             //gives every space in array a value
-            for (i  = 0; i < n; i++)
+            for (row  = 0; row < n; row++)
             {
-                for(j = 0; j < n; j++)
+                for(col = 0; col < n; col++)
                 {
                     //returns random legal value
-                    int value = getRand(i, j, rand);
+                    int value = getRand(row, col, rand);
                     //Console.Write(value);
                     //sets space value
-                    cells[i, j] = new CellNode(value);
+                    cells[row, col] = new CellNode(value, row, col);
                 }
             }
 
             //sets goal space
-            cells[rowNum - 1, colNum - 1] = new CellNode(0);
+            cells[rowNum - 1, colNum - 1] = new CellNode(0, rowNum - 1, colNum - 1);
         }
 
         public int getRand(int row, int col, Random rand)
@@ -56,9 +56,7 @@ namespace Local_Search
             maxValue = Math.Max(maxValue, (col - 1));
 
             //return random int between 1 and maxvalue
-            int ro = rand.Next(minValue,maxValue);
-           
-            return ro;
+            return rand.Next(minValue,maxValue);
         }
 
         #region util
@@ -68,7 +66,7 @@ namespace Local_Search
             {
                 for (int col = 0; col < colNum; col++)
                 {
-                    Console.Write(cells[row,col] + " ");
+                    Console.Write(cells[row,col].moveNum + " ");
                 }
                 Console.WriteLine();
             }
@@ -78,31 +76,31 @@ namespace Local_Search
         public void makeExample()
         {
             
-            this.cells[0, 0] = new CellNode(2);
-            this.cells[0, 1] = new CellNode(2);
-            this.cells[0, 2] = new CellNode(2);
-            this.cells[0, 3] = new CellNode(4);
-            this.cells[0, 4] = new CellNode(3);
-            this.cells[1, 0] = new CellNode(2);
-            this.cells[1, 1] = new CellNode(2);
-            this.cells[1, 2] = new CellNode(3);
-            this.cells[1, 3] = new CellNode(3);
-            this.cells[1, 4] = new CellNode(3);
-            this.cells[2, 0] = new CellNode(3);
-            this.cells[2, 1] = new CellNode(3);
-            this.cells[2, 2] = new CellNode(2);
-            this.cells[2, 3] = new CellNode(3);
-            this.cells[2, 4] = new CellNode(3);
-            this.cells[3, 0] = new CellNode(4);
-            this.cells[3, 1] = new CellNode(3);
-            this.cells[3, 2] = new CellNode(2);
-            this.cells[3, 3] = new CellNode(2);
-            this.cells[3, 4] = new CellNode(2);
-            this.cells[4, 0] = new CellNode(1);
-            this.cells[4, 1] = new CellNode(2);
-            this.cells[4, 2] = new CellNode(1);
-            this.cells[4, 3] = new CellNode(4);
-            this.cells[4, 4] = new CellNode(0);
+            this.cells[0, 0] = new CellNode(2, 0, 0);
+            this.cells[0, 1] = new CellNode(2,0,1);
+            this.cells[0, 2] = new CellNode(2,0,2);
+            this.cells[0, 3] = new CellNode(4,0,3);
+            this.cells[0, 4] = new CellNode(3,0,4);
+            this.cells[1, 0] = new CellNode(2,1,0);
+            this.cells[1, 1] = new CellNode(2,1,1);
+            this.cells[1, 2] = new CellNode(3,1,2);
+            this.cells[1, 3] = new CellNode(3,1,3);
+            this.cells[1, 4] = new CellNode(3,1,4);
+            this.cells[2, 0] = new CellNode(3,2,0);
+            this.cells[2, 1] = new CellNode(3,2,1);
+            this.cells[2, 2] = new CellNode(2,2,2);
+            this.cells[2, 3] = new CellNode(3,2,3);
+            this.cells[2, 4] = new CellNode(3,2,4);
+            this.cells[3, 0] = new CellNode(4,3,0);
+            this.cells[3, 1] = new CellNode(3,3,1);
+            this.cells[3, 2] = new CellNode(2,3,2);
+            this.cells[3, 3] = new CellNode(2,3,3);
+            this.cells[3, 4] = new CellNode(2,3,4);
+            this.cells[4, 0] = new CellNode(1,4,0);
+            this.cells[4, 1] = new CellNode(2,4,1);
+            this.cells[4, 2] = new CellNode(1,4,2);
+            this.cells[4, 3] = new CellNode(4,4,3);
+            this.cells[4, 4] = new CellNode(0,4,4);
             
         }
         #endregion

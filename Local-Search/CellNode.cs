@@ -8,13 +8,18 @@ namespace Local_Search
 {
     class CellNode
     {
+        public int row, col;
+
         public int moveNum;
         public int depth;
         public List<CellNode> children;
 
         public CellNode() { }
-        public CellNode(int moveNum)
+        public CellNode(int moveNum, int row, int col)
         {
+            this.row = row;
+            this.col = col;
+
             this.moveNum = moveNum;
             depth = 0;
             children = new List<CellNode>();

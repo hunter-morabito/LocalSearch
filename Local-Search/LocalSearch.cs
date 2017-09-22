@@ -17,7 +17,7 @@ namespace Local_Search
             grid.makeExample();
             grid.PrintGrid();
 
-            GridTree gridTree = new GridTree(grid);
+            GridTree gridTree = new GridTree(ref grid);
 
         }
        
