@@ -1,0 +1,15 @@
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\bin\Debug\GridGUI.exe.config
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\bin\Debug\GridGUI.exe
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\bin\Debug\GridGUI.pdb
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\GridGUI.csprojResolveAssemblyReference.cache
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\MainWindow.g.cs
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\App.g.cs
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\GridGUI_MarkupCompile.cache
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\GridGUI_MarkupCompile.lref
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\MainWindow.baml
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\GridGUI.g.resources
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\GridGUI.Properties.Resources.resources
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\GridGUI.csproj.GenerateResource.Cache
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\GridGUI.csproj.CoreCompileInputs.cache
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\GridGUI.exe
+C:\Users\Joshua\source\repos\Local-Search\GridGUI\obj\Debug\GridGUI.pdb

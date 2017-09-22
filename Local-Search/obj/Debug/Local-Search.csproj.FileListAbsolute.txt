@@ -4,3 +4,4 @@ C:\Users\Joshua\source\repos\Local-Search\Local-Search\bin\Debug\Local-Search.ex
 C:\Users\Joshua\source\repos\Local-Search\Local-Search\bin\Debug\Local-Search.pdb
 C:\Users\Joshua\source\repos\Local-Search\Local-Search\obj\Debug\Local-Search.exe
 C:\Users\Joshua\source\repos\Local-Search\Local-Search\obj\Debug\Local-Search.pdb
+C:\Users\Joshua\source\repos\Local-Search\Local-Search\obj\Debug\Local-Search.csprojResolveAssemblyReference.cache

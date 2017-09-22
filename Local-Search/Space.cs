@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xaml;
-
 
 namespace Local_Search
 {
-    class LocalSearch
+    class Space
     {
-        public static void Main()
+        public int num;
+        public Space(int num)
         {
-            Grid hey = new Grid(5);
-            hey.toString();
-            
+            this.num = num;
         }
     }
 }
