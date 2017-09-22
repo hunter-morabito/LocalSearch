@@ -1,0 +1,6 @@
+C:\Users\Joshua\source\repos\Local-Search\Local-Search\obj\Debug\Local-Search.csproj.CoreCompileInputs.cache
+C:\Users\Joshua\source\repos\Local-Search\Local-Search\bin\Debug\Local-Search.exe.config
+C:\Users\Joshua\source\repos\Local-Search\Local-Search\bin\Debug\Local-Search.exe
+C:\Users\Joshua\source\repos\Local-Search\Local-Search\bin\Debug\Local-Search.pdb
+C:\Users\Joshua\source\repos\Local-Search\Local-Search\obj\Debug\Local-Search.exe
+C:\Users\Joshua\source\repos\Local-Search\Local-Search\obj\Debug\Local-Search.pdb
