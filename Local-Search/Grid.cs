@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Local_Search
 {
-    public class Grid
+     class Grid
     {
-        Space[,] spaces;
-        int rowNum;//test
+        public CellNode[,] cells;
+        int rowNum;
         int colNum;
 
         public Grid() { }
 
         //Grid construct
-        public Grid(int n, int m)
+        public Grid(int n)
         {
             int i = 0;
             int j = 0;
@@ -23,25 +23,25 @@ namespace Local_Search
             //number of rows
             rowNum = n;
             //number of columns
-            colNum = m;
+            colNum = n;
             //initializes space array
-            spaces = new Space[rowNum,colNum];
+            cells = new CellNode[rowNum,colNum];
 
             //gives every space in array a value
             for (i  = 0; i < n; i++)
             {
-                for(j = 0; j < m; j++)
+                for(j = 0; j < n; j++)
                 {
                     //returns random legal value
                     int value = getRand(i, j, rand);
                     //Console.Write(value);
                     //sets space value
-                    spaces[i,j] = new Space(value);
+                    cells[i, j] = new CellNode(value);
                 }
             }
 
             //sets goal space
-            spaces[rowNum-1, colNum-1] = new Space(0);
+            cells[rowNum - 1, colNum - 1] = new CellNode(0);
         }
 
         public int getRand(int row, int col, Random rand)
@@ -61,16 +61,50 @@ namespace Local_Search
             return ro;
         }
 
-        public void toString()
+        #region util
+        public  void  PrintGrid()
         {
             for (int row = 0; row < rowNum; row++)
             {
                 for (int col = 0; col < colNum; col++)
                 {
-                    Console.Write(spaces[row,col].num + " ");
+                    Console.Write(cells[row,col] + " ");
                 }
                 Console.WriteLine();
             }
         }
+
+        //used as grid from example in assignment
+        public void makeExample()
+        {
+            
+            this.cells[0, 0] = new CellNode(2);
+            this.cells[0, 1] = new CellNode(2);
+            this.cells[0, 2] = new CellNode(2);
+            this.cells[0, 3] = new CellNode(4);
+            this.cells[0, 4] = new CellNode(3);
+            this.cells[1, 0] = new CellNode(2);
+            this.cells[1, 1] = new CellNode(2);
+            this.cells[1, 2] = new CellNode(3);
+            this.cells[1, 3] = new CellNode(3);
+            this.cells[1, 4] = new CellNode(3);
+            this.cells[2, 0] = new CellNode(3);
+            this.cells[2, 1] = new CellNode(3);
+            this.cells[2, 2] = new CellNode(2);
+            this.cells[2, 3] = new CellNode(3);
+            this.cells[2, 4] = new CellNode(3);
+            this.cells[3, 0] = new CellNode(4);
+            this.cells[3, 1] = new CellNode(3);
+            this.cells[3, 2] = new CellNode(2);
+            this.cells[3, 3] = new CellNode(2);
+            this.cells[3, 4] = new CellNode(2);
+            this.cells[4, 0] = new CellNode(1);
+            this.cells[4, 1] = new CellNode(2);
+            this.cells[4, 2] = new CellNode(1);
+            this.cells[4, 3] = new CellNode(4);
+            this.cells[4, 4] = new CellNode(0);
+            
+        }
+        #endregion
     }
 }

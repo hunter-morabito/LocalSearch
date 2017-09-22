@@ -5,3 +5,9 @@ C:\Users\Joshua\source\repos\Local-Search\Local-Search\bin\Debug\Local-Search.pd
 C:\Users\Joshua\source\repos\Local-Search\Local-Search\obj\Debug\Local-Search.exe
 C:\Users\Joshua\source\repos\Local-Search\Local-Search\obj\Debug\Local-Search.pdb
 C:\Users\Joshua\source\repos\Local-Search\Local-Search\obj\Debug\Local-Search.csprojResolveAssemblyReference.cache
+C:\Users\Hunter\Documents\Visual Studio 2015\Projects\LocalSearch\Local-Search\bin\Debug\Local-Search.exe.config
+C:\Users\Hunter\Documents\Visual Studio 2015\Projects\LocalSearch\Local-Search\obj\Debug\Local-Search.exe
+C:\Users\Hunter\Documents\Visual Studio 2015\Projects\LocalSearch\Local-Search\obj\Debug\Local-Search.pdb
+C:\Users\Hunter\Documents\Visual Studio 2015\Projects\LocalSearch\Local-Search\bin\Debug\Local-Search.exe
+C:\Users\Hunter\Documents\Visual Studio 2015\Projects\LocalSearch\Local-Search\bin\Debug\Local-Search.pdb
+C:\Users\Hunter\Documents\Visual Studio 2015\Projects\LocalSearch\Local-Search\obj\Debug\Local-Search.csprojResolveAssemblyReference.cache

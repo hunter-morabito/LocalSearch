@@ -12,8 +12,15 @@ namespace Local_Search
     {
         public static void Main()
         {
-            Grid hey = new Grid(7, 7);
-            hey.toString();
+            Console.Write("Enter n for the nxn matrix: ");
+            Grid grid = new Grid(int.Parse(Console.ReadLine()));
+            grid.makeExample();
+            grid.PrintGrid();
+
+            GridTree gridTree = new GridTree(grid);
+
         }
+       
+        
     }
 }
