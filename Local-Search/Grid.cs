@@ -15,24 +15,28 @@ namespace Local_Search
         public Grid() { }
 
         //Grid construct
-        public Grid(int n)
+        public Grid(int n, int m)
         {
+            int i = 0;
+            int j = 0;
+            Random rand = new Random();
             //number of rows
             rowNum = n;
             //number of columns
-            colNum = n;
+            colNum = m;
             //initializes space array
-            spaces = new Space[n,n];
+            spaces = new Space[rowNum,colNum];
 
             //gives every space in array a value
-            for (int row  = 0; row < n; row++)
+            for (i  = 0; i < n; i++)
             {
-                for(int col = 0; col < n; col++)
+                for(j = 0; j < m; j++)
                 {
                     //returns random legal value
-                    int value = getRand(row, col);
+                    int value = getRand(i, j, rand);
+                    //Console.Write(value);
                     //sets space value
-                    spaces[row,col] = new Space(value);
+                    spaces[i,j] = new Space(value);
                 }
             }
 
@@ -40,18 +44,21 @@ namespace Local_Search
             spaces[rowNum-1, colNum-1] = new Space(0);
         }
 
-        public int getRand(int row, int col)
+        public int getRand(int row, int col, Random rand)
         {
             int minValue = 1;
             int maxValue;
             //find Max of Left and Right
-            maxValue = Math.Max((row - rowNum), (rowNum - row));
+            maxValue = Math.Max((rowNum - row), (row - 1));
             //compare new Max to Up
-            maxValue = Math.Max(maxValue, (col - colNum));
-            //compare new Max to Down
             maxValue = Math.Max(maxValue, (colNum - col));
-            Random rand = new Random();
-            return rand.Next(minValue, maxValue);
+            //compare new Max to Down
+            maxValue = Math.Max(maxValue, (col - 1));
+
+            //return random int between 1 and maxvalue
+            int ro = rand.Next(minValue,maxValue);
+           
+            return ro;
         }
 
         public void toString()
@@ -60,7 +67,7 @@ namespace Local_Search
             {
                 for (int col = 0; col < colNum; col++)
                 {
-                    Console.Write(spaces[row, col].num + " ");
+                    Console.Write(spaces[row,col].num + " ");
                 }
                 Console.WriteLine();
             }

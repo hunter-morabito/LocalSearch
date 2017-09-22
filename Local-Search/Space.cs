@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Local_Search
 {
-    class Space
+    public class Space
     {
         public int num;
         public Space(int num)
@@ -14,4 +14,5 @@ namespace Local_Search
             this.num = num;
         }
     }
+
 }

@@ -12,9 +12,8 @@ namespace Local_Search
     {
         public static void Main()
         {
-            Grid hey = new Grid(5);
+            Grid hey = new Grid(7, 7);
             hey.toString();
-            
         }
     }
 }
