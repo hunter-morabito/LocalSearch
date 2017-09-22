@@ -9,7 +9,7 @@ namespace Local_Search
     public class Grid
     {
         Space[,] spaces;
-        int rowNum;
+        int rowNum;//test
         int colNum;
 
         public Grid() { }
