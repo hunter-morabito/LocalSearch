@@ -21,7 +21,7 @@ namespace Local_Search
             this.col = col;
 
             this.moveNum = moveNum;
-            depth = 0;
+            depth = -1;
             children = new List<CellNode>();
         }
 

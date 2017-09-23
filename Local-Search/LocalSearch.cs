@@ -14,11 +14,17 @@ namespace Local_Search
         {
             Console.Write("Enter n for the nxn matrix: ");
             Grid grid = new Grid(int.Parse(Console.ReadLine()));
-            grid.makeExample();
+
+            grid.makeExample1();
             grid.PrintGrid();
-
             GridTree gridTree = new GridTree(ref grid);
+            grid.PrintDepth();
+            Console.WriteLine();
 
+            grid.makeExample2();
+            grid.PrintGrid();
+            gridTree = new GridTree(ref grid);
+            grid.PrintDepth();
         }
        
         

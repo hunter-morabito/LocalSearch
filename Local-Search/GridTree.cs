@@ -32,7 +32,7 @@ namespace Local_Search
             binaryArray[root.row, root.col] = 1;
 
             //loop through queue
-            while(queue.Count > 0)
+            while (queue.Count > 0)
             {
                 //remove currentNode from queue
                 currentNode = queue.Dequeue();
@@ -78,10 +78,22 @@ namespace Local_Search
                 }
 
             }
-                printBA(binaryArray);
-   
+            PrintBinaryArray(binaryArray);
 
+            AssignDepth(root, 0);
+            grid.AssignValue();
             //recursive treverse and assign depth
+        }
+
+        private void AssignDepth(CellNode current, int depth)
+        {
+            if (current == null)
+                return;
+            current.depth = depth;
+            foreach (CellNode node in current.children)
+            {
+                AssignDepth(node, depth + 1);
+            }
         }
 
         private void AddNodeToTree(ref Queue<CellNode> queue, ref CellNode currentNode, ref CellNode contender, ref int[,] binaryArray)
@@ -96,11 +108,12 @@ namespace Local_Search
 
         private bool InTree(int[,] binaryArray, int row, int col)
         {
-            return binaryArray[row,col] == 1 ? true : false;
+            return binaryArray[row, col] == 1 ? true : false;
         }
 
-        private void printBA(int[,] ba)
+        private void PrintBinaryArray(int[,] ba)
         {
+            Console.WriteLine("Binary Array:");
             for (int row = 0; row < ba.GetLength(0); row++)
             {
                 for (int col = 0; col < ba.GetLength(1); col++)
@@ -109,6 +122,7 @@ namespace Local_Search
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
         }
     }
 }
