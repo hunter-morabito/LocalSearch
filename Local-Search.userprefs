@@ -1,0 +1,18 @@
+﻿<Properties StartupConfiguration="{3923D813-0308-4029-83C6-97D56FBC665A}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Local-Search/CellNode.cs">
+    <Files>
+      <File FileName="Local-Search/LocalSearch.cs" Line="1" Column="1" />
+      <File FileName="Local-Search/Grid.cs" Line="1" Column="1" />
+      <File FileName="Local-Search/CellNode.cs" Line="14" Column="40" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.Local-Search PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/joshua/projects/LocalSearch/Local-Search/Grid.cs" relfile="Local-Search/Grid.cs" line="53" column="40" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
