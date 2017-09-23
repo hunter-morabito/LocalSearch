@@ -14,13 +14,18 @@ namespace Local_Search
         public int NumOfRows { get; }
         public int NumOfCol { get; }
 
+        public Coordinate goalCoordinate;
+
+        private Random rand;
+
+        #region Constructors
         public Grid() { }
 
         //Grid construct
         public Grid(int n)
         {
-           
-            Random rand = new Random();
+            //set random var
+            rand = new Random();
             //number of rows
             NumOfRows = n;
             //number of columns
@@ -34,7 +39,7 @@ namespace Local_Search
                 for (int col = 0; col < n; col++)
                 {
                     //returns random legal value
-                    int value = getRand(row, col, rand);
+                    int value = getRandMoveNum(row, col);
                     //sets space value
                     cells[row, col] = new CellNode(value, row, col);
                 }
@@ -42,24 +47,75 @@ namespace Local_Search
 
             //sets goal space
             cells[NumOfRows - 1, NumOfCol - 1] = new CellNode(0, NumOfRows - 1, NumOfCol - 1);
+            goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
+
         }
 
-
-        private int getRand(int row, int col, Random rand)
+        //contructor to duplicate grid
+        public Grid(Grid oldGrid)
         {
-            int minValue = 1;
-            int maxValue;
-            //find Max of Left and Right
-            maxValue = Math.Max((NumOfRows - row), (row - 1));
-            //compare new Max to Up
-            maxValue = Math.Max(maxValue, (NumOfCol - col));
-            //compare new Max to Down
-            maxValue = Math.Max(maxValue, (col - 1));
+            //set random var
+            rand = new Random();
+            //set row number
+            NumOfRows = oldGrid.NumOfRows;
+            //number of columns
+            NumOfCol = oldGrid.NumOfCol;
+            //initializes space array
+            cells = new CellNode[NumOfRows, NumOfCol];
 
-            //return random int between 1 and maxvalue
-            return rand.Next(minValue, maxValue);
+            for (int row = 0; row < NumOfRows; row++)
+            {
+                for (int col = 0; col < NumOfCol; col++)
+                {
+                    cells[row, col].moveNum = oldGrid.cells[row, col].moveNum;
+                }
+            }
+            goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
+        }
+        #endregion
+
+        #region Task 2 Functions
+        public int Evaluate()
+        {
+            GridTree gridTree = new GridTree(this);
+            //assign grid its value
+            AssignValue();
+            return value;
         }
 
+        internal void AssignValue()
+        {
+            value = cells[NumOfRows - 1, NumOfCol - 1].depth;
+            if (value == -1)
+            {
+                value = 0;
+
+                for (int i = 0; i < NumOfRows; i++)
+                    for (int j = 0; j < NumOfCol; j++)
+                        if (cells[i, j].depth == -1)
+                            value -= 1;
+
+            }
+        }
+        #endregion
+
+        #region Task 3 Functions
+        public void HillClimb(int iterations)
+        {
+            //loop
+            //make new grid copy
+            Grid testGrid = new Grid(this);
+            //get a rand coordinate thats not the goal
+            Random rand = new Random();
+
+
+            //change coordinate to DIFFERENT LEGAL number
+            //evaluate new grid
+            // comare values
+        }
+        #endregion
+
+        #region Cell Functions
         internal bool IsLegalCell(CellNode cellNode)
         {
             if (!IsLegalUp(cellNode))
@@ -72,27 +128,60 @@ namespace Local_Search
 
         internal bool IsLegalUp(CellNode cellNode)
         {
-            return (cellNode.row - cellNode.moveNum) >= 0 ? true : false;
+            return (cellNode.coordinate.row - cellNode.moveNum) >= 0 ? true : false;
         }
 
         internal bool IsLegalDown(CellNode cellNode)
         {
-            return ((cellNode.row + cellNode.moveNum) < cells.GetLength(0)) ? true : false;
+            return ((cellNode.coordinate.row + cellNode.moveNum) < cells.GetLength(0)) ? true : false;
         }
 
         internal bool IsLegalLeft(CellNode cellNode)
         {
-            return (cellNode.col - cellNode.moveNum) >= 0 ? true : false;
+            return (cellNode.coordinate.col - cellNode.moveNum) >= 0 ? true : false;
         }
         internal bool IsLegalRight(CellNode cellNode)
         {
-            return (cellNode.col + cellNode.moveNum) < cells.GetLength(1) ? true : false;
+            return (cellNode.coordinate.col + cellNode.moveNum) < cells.GetLength(1) ? true : false;
         }
 
+        private int getRandMoveNum(int row, int col)
+        {
+            int minValue = 1;
+            int maxValue;
+            //find Max of Left and Right
+            maxValue = Math.Max((NumOfRows - row), (row - 1));
+            //compare new Max to Up
+            maxValue = Math.Max(maxValue, (NumOfCol - col));
+            //compare new Max to Down
+            maxValue = Math.Max(maxValue, (col - 1));
 
 
 
+
+            //return random int between 1 and maxvalue
+            return rand.Next(minValue, maxValue);
+        }
         #region util
+        //gets random grid coordinate
+        private Coordinate getRandCoordinate()
+        {
+            //init
+            Coordinate randCoordinate;
+            //loop through at least once
+            do
+            {
+                //init random coordinate
+                randCoordinate = new Coordinate(rand.Next(0, NumOfRows - 1), rand.Next(0, NumOfCol - 1));
+            } while (!randCoordinate.Equals(goalCoordinate));
+            //check to see if its the same at the goal coordinate
+
+            return randCoordinate;
+        }
+        #endregion
+
+        #region Print Functions
+
         public void PrintGrid()
         {
             Console.WriteLine("Grid:");
@@ -126,7 +215,7 @@ namespace Local_Search
                 Console.WriteLine();
             }
             Console.WriteLine("\nValue of Function is: " + value);
-            
+
         }
 
         //used as grid from example in assignment
@@ -190,21 +279,6 @@ namespace Local_Search
             this.cells[4, 3] = new CellNode(2, 4, 3);
             this.cells[4, 4] = new CellNode(0, 4, 4);
 
-        }
-
-        internal void AssignValue()
-        {
-            value = cells[NumOfRows - 1, NumOfCol - 1].depth;
-            if(value == -1)
-            {
-                value = 0;
-
-                for(int i = 0; i < NumOfRows; i++)
-                    for(int j =0; j< NumOfCol; j++)
-                        if (cells[i, j].depth == -1)
-                            value -= 1;
-                    
-            }
         }
         #endregion
     }
