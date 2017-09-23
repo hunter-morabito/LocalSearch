@@ -11,7 +11,7 @@ namespace Local_Search
         public int row, col;
 
         public int moveNum;
-        public int depth;
+        public int depth;//hello
         public List<CellNode> children;
 
         public CellNode() { }
