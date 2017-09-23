@@ -10,12 +10,12 @@ namespace Local_Search
     {
         public CellNode root;
 
-        public GridTree(ref Grid grid)
+        public GridTree(Grid grid)
         {
-            BuildTree(ref grid);
+            BuildTree(grid);
         }
 
-        public void BuildTree(ref Grid grid)
+        public void BuildTree(Grid grid)
         {
             //create queue
             Queue<CellNode> queue = new Queue<CellNode>();
@@ -29,7 +29,7 @@ namespace Local_Search
             //add root to queue
             queue.Enqueue(root);
             //root is visited
-            binaryArray[root.row, root.col] = 1;
+            binaryArray[root.coordinate.row, root.coordinate.col] = 1;
 
             //loop through queue
             while (queue.Count > 0)
@@ -41,9 +41,9 @@ namespace Local_Search
                 if (grid.IsLegalUp(currentNode))
                 {
                     //initialize contender
-                    CellNode contender = grid.cells[(currentNode.row - currentNode.moveNum), currentNode.col];
+                    CellNode contender = grid.cells[(currentNode.coordinate.row - currentNode.moveNum), currentNode.coordinate.col];
                     //check if contender visited
-                    if (!InTree(binaryArray, contender.row, contender.col))
+                    if (!InTree(binaryArray, contender.coordinate.row, contender.coordinate.col))
                         //Add Node
                         AddNodeToTree(ref queue, ref currentNode, ref contender, ref binaryArray);
                 }
@@ -52,9 +52,9 @@ namespace Local_Search
                 if (grid.IsLegalDown(currentNode))
                 {
                     //initialize contender
-                    CellNode contender = grid.cells[(currentNode.row + currentNode.moveNum), currentNode.col];
+                    CellNode contender = grid.cells[(currentNode.coordinate.row + currentNode.moveNum), currentNode.coordinate.col];
                     //check if contender visited
-                    if (!InTree(binaryArray, contender.row, contender.col))
+                    if (!InTree(binaryArray, contender.coordinate.row, contender.coordinate.col))
                         //Add Node
                         AddNodeToTree(ref queue, ref currentNode, ref contender, ref binaryArray);
                 }
@@ -63,9 +63,9 @@ namespace Local_Search
                 if (grid.IsLegalLeft(currentNode))
                 {
                     //initialize contender
-                    CellNode contender = grid.cells[currentNode.row, (currentNode.col - currentNode.moveNum)];
+                    CellNode contender = grid.cells[currentNode.coordinate.row, (currentNode.coordinate.col - currentNode.moveNum)];
                     //check if contender visited
-                    if (!InTree(binaryArray, contender.row, contender.col))
+                    if (!InTree(binaryArray, contender.coordinate.row, contender.coordinate.col))
                         //Add Node
                         AddNodeToTree(ref queue, ref currentNode, ref contender, ref binaryArray);
                 }
@@ -74,21 +74,19 @@ namespace Local_Search
                 if (grid.IsLegalRight(currentNode))
                 {
                     //initialize contender
-                    CellNode contender = grid.cells[currentNode.row, (currentNode.col + currentNode.moveNum)];
+                    CellNode contender = grid.cells[currentNode.coordinate.row, (currentNode.coordinate.col + currentNode.moveNum)];
                     //check if contender visited
-                    if (!InTree(binaryArray, contender.row, contender.col))
+                    if (!InTree(binaryArray, contender.coordinate.row, contender.coordinate.col))
                         //Add Node
                         AddNodeToTree(ref queue, ref currentNode, ref contender, ref binaryArray);
                 }
             }//end loop through queue
 
-            PrintBinaryArray(binaryArray);
-            
+            //PrintBinaryArray(binaryArray);
 
             //recursive treverse and assign depth
             AssignDepth(root, 0);
-            //assign grid its value
-            grid.AssignValue();
+            
         }
 
         //Assigns each node in the grid its depth on the tree
@@ -114,7 +112,7 @@ namespace Local_Search
             //add contender to queue
             queue.Enqueue(contender);
             //check as added to tree
-            binaryArray[contender.row, contender.col] = 1;
+            binaryArray[contender.coordinate.row, contender.coordinate.col] = 1;
         }
 
         //returns bool depending if node is in tree or not
@@ -136,5 +134,7 @@ namespace Local_Search
             }
             Console.WriteLine();
         }
+
+        
     }
 }

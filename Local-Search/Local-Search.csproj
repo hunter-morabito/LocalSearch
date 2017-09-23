@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CellNode.cs" />
+    <Compile Include="Coordinate.cs" />
     <Compile Include="GridTree.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="LocalSearch.cs" />

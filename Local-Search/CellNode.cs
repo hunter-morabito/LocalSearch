@@ -8,7 +8,7 @@ namespace Local_Search
 {
     class CellNode
     {
-        public int row, col;
+        public Coordinate coordinate;
 
         public int moveNum;
         public int depth;//hellos
@@ -17,13 +17,13 @@ namespace Local_Search
         public CellNode() { }
         public CellNode(int moveNum, int row, int col)
         {
-            this.row = row;
-            this.col = col;
+            coordinate = new Coordinate(row, col);
 
             this.moveNum = moveNum;
             depth = -1;
             children = new List<CellNode>();
         }
+        
 
         public void AddChild(CellNode child)
         {

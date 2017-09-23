@@ -15,16 +15,20 @@ namespace Local_Search
             Console.Write("Enter n for the nxn matrix: ");
             Grid grid = new Grid(5/*int.Parse(Console.ReadLine())*/);
 
+            //sets grid to example in task 2
             grid.makeExample1();
             grid.PrintGrid();
-            GridTree gridTree = new GridTree(ref grid);
+            //Task2
+            grid.Evaluate();
             grid.PrintDepth();
             Console.WriteLine();
+            //Task3
+            //grid.HillClimb(5);
 
-            grid.makeExample2();
+            /*grid.makeExample2();
             grid.PrintGrid();
             gridTree = new GridTree(ref grid);
-            grid.PrintDepth();
+            grid.PrintDepth();*/
         }
        
         
