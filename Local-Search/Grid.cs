@@ -11,49 +11,48 @@ namespace Local_Search
         public CellNode[,] cells;
         public int value;
 
-        int rowNum;
-        int colNum;
+        public int NumOfRows { get; }
+        public int NumOfCol { get; }
 
         public Grid() { }
 
         //Grid construct
         public Grid(int n)
         {
-            int row = 0;
-            int col = 0;
+           
             Random rand = new Random();
             //number of rows
-            rowNum = n;
+            NumOfRows = n;
             //number of columns
-            colNum = n;
+            NumOfCol = n;
             //initializes space array
-            cells = new CellNode[rowNum, colNum];
+            cells = new CellNode[NumOfRows, NumOfCol];
 
             //gives every space in array a value
-            for (row = 0; row < n; row++)
+            for (int row = 0; row < n; row++)
             {
-                for (col = 0; col < n; col++)
+                for (int col = 0; col < n; col++)
                 {
                     //returns random legal value
                     int value = getRand(row, col, rand);
-                    //Console.Write(value);
                     //sets space value
                     cells[row, col] = new CellNode(value, row, col);
                 }
             }
 
             //sets goal space
-            cells[rowNum - 1, colNum - 1] = new CellNode(0, rowNum - 1, colNum - 1);
+            cells[NumOfRows - 1, NumOfCol - 1] = new CellNode(0, NumOfRows - 1, NumOfCol - 1);
         }
 
-        public int getRand(int row, int col, Random rand)
+
+        private int getRand(int row, int col, Random rand)
         {
             int minValue = 1;
             int maxValue;
             //find Max of Left and Right
-            maxValue = Math.Max((rowNum - row), (row - 1));
+            maxValue = Math.Max((NumOfRows - row), (row - 1));
             //compare new Max to Up
-            maxValue = Math.Max(maxValue, (colNum - col));
+            maxValue = Math.Max(maxValue, (NumOfCol - col));
             //compare new Max to Down
             maxValue = Math.Max(maxValue, (col - 1));
 
@@ -61,13 +60,43 @@ namespace Local_Search
             return rand.Next(minValue, maxValue);
         }
 
+        internal bool IsLegalCell(CellNode cellNode)
+        {
+            if (!IsLegalUp(cellNode))
+                if (!IsLegalDown(cellNode))
+                    if (!IsLegalLeft(cellNode))
+                        if (!IsLegalRight(cellNode))
+                            return false;
+            return true;
+        }
+
+        internal bool IsLegalUp(CellNode cellNode)
+        {
+            return (cellNode.row - cellNode.moveNum) >= 0 ? true : false;
+        }
+
+        internal bool IsLegalDown(CellNode cellNode)
+        {
+            return ((cellNode.row + cellNode.moveNum) < cells.GetLength(0)) ? true : false;
+        }
+
+        internal bool IsLegalLeft(CellNode cellNode)
+        {
+            return (cellNode.col - cellNode.moveNum) >= 0 ? true : false;
+        }
+        internal bool IsLegalRight(CellNode cellNode)
+        {
+            return (cellNode.col + cellNode.moveNum) < cells.GetLength(1) ? true : false;
+        }
+
+
         #region util
         public void PrintGrid()
         {
             Console.WriteLine("Grid:");
-            for (int row = 0; row < rowNum; row++)
+            for (int row = 0; row < NumOfRows; row++)
             {
-                for (int col = 0; col < colNum; col++)
+                for (int col = 0; col < NumOfCol; col++)
                 {
                     Console.Write(cells[row, col].moveNum + " ");
                 }
@@ -79,9 +108,9 @@ namespace Local_Search
         public void PrintDepth()
         {
             Console.WriteLine("Depth:");
-            for (int row = 0; row < rowNum; row++)
+            for (int row = 0; row < NumOfRows; row++)
             {
-                for (int col = 0; col < colNum; col++)
+                for (int col = 0; col < NumOfCol; col++)
                 {
                     if (cells[row, col].depth == -1)
                     {
@@ -163,13 +192,13 @@ namespace Local_Search
 
         internal void AssignValue()
         {
-            value = cells[rowNum - 1, colNum - 1].depth;
+            value = cells[NumOfRows - 1, NumOfCol - 1].depth;
             if(value == -1)
             {
                 value = 0;
 
-                for(int i = 0; i < rowNum; i++)
-                    for(int j =0; j< colNum; j++)
+                for(int i = 0; i < NumOfRows; i++)
+                    for(int j =0; j< NumOfCol; j++)
                         if (cells[i, j].depth == -1)
                             value -= 1;
                     

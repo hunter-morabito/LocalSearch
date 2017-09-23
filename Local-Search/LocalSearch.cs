@@ -13,7 +13,7 @@ namespace Local_Search
         public static void Main()
         {
             Console.Write("Enter n for the nxn matrix: ");
-            Grid grid = new Grid(int.Parse(Console.ReadLine()));
+            Grid grid = new Grid(5/*int.Parse(Console.ReadLine())*/);
 
             grid.makeExample1();
             grid.PrintGrid();

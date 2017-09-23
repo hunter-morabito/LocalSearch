@@ -24,7 +24,7 @@ namespace Local_Search
 
             //set root to top left cell
             root = grid.cells[0, 0];
-            //set Current Node
+            //set Current Node to root
             CellNode currentNode = root;
             //add root to queue
             queue.Enqueue(root);
@@ -36,8 +36,9 @@ namespace Local_Search
             {
                 //remove currentNode from queue
                 currentNode = queue.Dequeue();
+
                 //legal check for going up 
-                if ((currentNode.row - currentNode.moveNum) >= 0)
+                if (grid.IsLegalUp(currentNode))
                 {
                     //initialize contender
                     CellNode contender = grid.cells[(currentNode.row - currentNode.moveNum), currentNode.col];
@@ -46,8 +47,9 @@ namespace Local_Search
                         //Add Node
                         AddNodeToTree(ref queue, ref currentNode, ref contender, ref binaryArray);
                 }
+
                 //legal check for going down
-                if ((currentNode.row + currentNode.moveNum) < grid.cells.GetLength(0))
+                if (grid.IsLegalDown(currentNode))
                 {
                     //initialize contender
                     CellNode contender = grid.cells[(currentNode.row + currentNode.moveNum), currentNode.col];
@@ -56,8 +58,9 @@ namespace Local_Search
                         //Add Node
                         AddNodeToTree(ref queue, ref currentNode, ref contender, ref binaryArray);
                 }
+
                 //legal check for going left
-                if ((currentNode.col - currentNode.moveNum) >= 0)
+                if (grid.IsLegalLeft(currentNode))
                 {
                     //initialize contender
                     CellNode contender = grid.cells[currentNode.row, (currentNode.col - currentNode.moveNum)];
@@ -66,8 +69,9 @@ namespace Local_Search
                         //Add Node
                         AddNodeToTree(ref queue, ref currentNode, ref contender, ref binaryArray);
                 }
+
                 //legal check for going right
-                if ((currentNode.col + currentNode.moveNum) < grid.cells.GetLength(1))
+                if (grid.IsLegalRight(currentNode))
                 {
                     //initialize contender
                     CellNode contender = grid.cells[currentNode.row, (currentNode.col + currentNode.moveNum)];
@@ -76,37 +80,45 @@ namespace Local_Search
                         //Add Node
                         AddNodeToTree(ref queue, ref currentNode, ref contender, ref binaryArray);
                 }
+            }//end loop through queue
 
-            }
             PrintBinaryArray(binaryArray);
+            
 
-            AssignDepth(root, 0);
-            grid.AssignValue();
             //recursive treverse and assign depth
+            AssignDepth(root, 0);
+            //assign grid its value
+            grid.AssignValue();
         }
 
+        //Assigns each node in the grid its depth on the tree
         private void AssignDepth(CellNode current, int depth)
         {
+            //base case
             if (current == null)
                 return;
+
+            //assign depth
             current.depth = depth;
+
+            //recursive reverse
             foreach (CellNode node in current.children)
-            {
                 AssignDepth(node, depth + 1);
-            }
+            
         }
 
         private void AddNodeToTree(ref Queue<CellNode> queue, ref CellNode currentNode, ref CellNode contender, ref int[,] binaryArray)
         {
             //add contender to currentNode children
-            currentNode.children.Add(contender);
+            currentNode.AddChild(contender);
             //add contender to queue
             queue.Enqueue(contender);
             //check as added to tree
             binaryArray[contender.row, contender.col] = 1;
         }
 
-        private bool InTree(int[,] binaryArray, int row, int col)
+        //returns bool depending if node is in tree or not
+        private bool InTree(int[,] binaryArray, int row, int col) 
         {
             return binaryArray[row, col] == 1 ? true : false;
         }
