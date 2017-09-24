@@ -24,7 +24,7 @@ namespace Local_Search
         //Grid construct
         public Grid(int n)
         {
-           //set random var
+            //set random var
             rand = new Random();
             //number of rows
             NumOfRows = n;
@@ -50,12 +50,12 @@ namespace Local_Search
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
 
         }
-        
+
         //contructor to duplicate grid
         public Grid(Grid oldGrid)
         {
             //set random var
-            rand = new Random();
+            rand = oldGrid.rand;
             //set row number
             NumOfRows = oldGrid.NumOfRows;
             //number of columns
@@ -67,7 +67,7 @@ namespace Local_Search
             {
                 for (int col = 0; col < NumOfCol; col++)
                 {
-                    cells[row, col].moveNum = oldGrid.cells[row, col].moveNum;
+                    cells[row, col] = new CellNode(oldGrid.cells[row, col].moveNum, row, col);
                 }
             }
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
@@ -103,15 +103,49 @@ namespace Local_Search
         public void HillClimb(int iterations)
         {
             //loop
-            //make new grid copy
-            Grid testGrid = new Grid(this);
-            //get a rand coordinate thats not the goal
-            Random rand = new Random();
-            
-            
-            //change coordinate to DIFFERENT LEGAL number
-            //evaluate new grid
-            // comare values
+            Grid testGrid;
+            int numOfIterations = 0;
+            //for (int i = 0; i < iterations; i++)
+            while (value > 3)
+            {
+                numOfIterations += 1;
+                //make new grid copy
+                testGrid = new Grid(this);
+                //Console.WriteLine("Old Grid:");
+                //testGrid.PrintGrid();
+
+                //get a rand coordinate thats not the goal
+                Coordinate randomCoordinate = getRandCoordinate();
+                //Console.WriteLine("Coordinate: ");
+                randomCoordinate.ToString();
+
+                //loops until the cell in the new coordinate has a different moveNum
+                do
+                {
+                    testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
+                } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
+                //Console.WriteLine("New Grid:");
+                //testGrid.PrintGrid();
+
+                //evaluate testGrid to get its value
+                testGrid.Evaluate();
+
+                //make sure goal is achieveable
+                if (testGrid.value >= 0)
+                    //check to see if grid has improved
+                    if (testGrid.value <= value)
+                    {
+                        //copy cells from test grid to this grid
+                        for (int row = 0; row < NumOfRows; row++)
+                            for (int col = 0; col < NumOfCol; col++)
+                                cells[row, col] = testGrid.cells[row, col];
+                        value = testGrid.value;
+                        //Console.WriteLine("Old Grid Value: " + value + "; New Grid Value: " + testGrid.value);
+                    }
+            }
+            Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
+
+
         }
         #endregion
 
@@ -125,17 +159,14 @@ namespace Local_Search
                             return false;
             return true;
         }
-
         internal bool IsLegalUp(CellNode cellNode)
         {
             return (cellNode.coordinate.row - cellNode.moveNum) >= 0 ? true : false;
         }
-
         internal bool IsLegalDown(CellNode cellNode)
         {
             return ((cellNode.coordinate.row + cellNode.moveNum) < cells.GetLength(0)) ? true : false;
         }
-
         internal bool IsLegalLeft(CellNode cellNode)
         {
             return (cellNode.coordinate.col - cellNode.moveNum) >= 0 ? true : false;
@@ -169,8 +200,8 @@ namespace Local_Search
             do
             {
                 //init random coordinate
-                randCoordinate = new Coordinate(rand.Next(0, NumOfRows - 1), rand.Next(0, NumOfCol - 1));
-            } while (!randCoordinate.Equals(goalCoordinate));
+                randCoordinate = new Coordinate(rand.Next(0, NumOfRows), rand.Next(0, NumOfCol));
+            } while (randCoordinate.Equals(goalCoordinate));
             //check to see if its the same at the goal coordinate
 
             return randCoordinate;
@@ -211,7 +242,7 @@ namespace Local_Search
                 Console.WriteLine();
             }
             Console.WriteLine("\nValue of Function is: " + value);
-            
+
         }
 
         //used as grid from example in assignment
