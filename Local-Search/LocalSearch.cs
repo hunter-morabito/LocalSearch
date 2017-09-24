@@ -15,7 +15,7 @@ namespace Local_Search
             Console.Write("Enter n for the nxn matrix: ");
             Grid grid = new Grid(5/*int.Parse(Console.ReadLine())*/);
 
-            grid.makeExample1();
+            grid.makeExample1();//hello
             grid.PrintGrid();
             GridTree gridTree = new GridTree(ref grid);
             grid.PrintDepth();
