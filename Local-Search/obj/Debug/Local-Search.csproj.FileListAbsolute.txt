@@ -17,13 +17,6 @@ C:/Users/Hunter/Documents/Visual Studio 2015/Projects/AI/LocalSearch/Local-Searc
 C:/Users/Hunter/Documents/Visual Studio 2015/Projects/AI/LocalSearch/Local-Search/bin/Debug/Local-Search.exe
 C:/Users/Hunter/Documents/Visual Studio 2015/Projects/AI/LocalSearch/Local-Search/bin/Debug/Local-Search.pdb
 C:/Users/Hunter/Documents/Visual Studio 2015/Projects/AI/LocalSearch/Local-Search/obj/Debug/Local-Search.csprojResolveAssemblyReference.cache
-C:/Users/Joshua/Documents/Visual Studio 2017/Projects/LocalSearch/Local-Search/bin/Debug/Local-Search.exe.config
-C:/Users/Joshua/Documents/Visual Studio 2017/Projects/LocalSearch/Local-Search/bin/Debug/Local-Search.exe
-C:/Users/Joshua/Documents/Visual Studio 2017/Projects/LocalSearch/Local-Search/bin/Debug/Local-Search.pdb
-C:/Users/Joshua/Documents/Visual Studio 2017/Projects/LocalSearch/Local-Search/obj/Debug/Local-Search.csprojResolveAssemblyReference.cache
-C:/Users/Joshua/Documents/Visual Studio 2017/Projects/LocalSearch/Local-Search/obj/Debug/Local-Search.csproj.CoreCompileInputs.cache
-C:/Users/Joshua/Documents/Visual Studio 2017/Projects/LocalSearch/Local-Search/obj/Debug/Local-Search.exe
-C:/Users/Joshua/Documents/Visual Studio 2017/Projects/LocalSearch/Local-Search/obj/Debug/Local-Search.pdb
 /Users/joshua/projects/LocalSearch/Local-Search/bin/Debug/Local-Search.exe.config
 /Users/joshua/projects/LocalSearch/Local-Search/bin/Debug/Local-Search.exe
 /Users/joshua/projects/LocalSearch/Local-Search/bin/Debug/Local-Search.pdb
@@ -31,3 +24,9 @@ C:/Users/Joshua/Documents/Visual Studio 2017/Projects/LocalSearch/Local-Search/o
 /Users/joshua/projects/LocalSearch/Local-Search/obj/Debug/Local-Search.csproj.CoreCompileInputs.cache
 /Users/joshua/projects/LocalSearch/Local-Search/obj/Debug/Local-Search.exe
 /Users/joshua/projects/LocalSearch/Local-Search/obj/Debug/Local-Search.pdb
+C:\Users\Joshua\Documents\Visual Studio 2017\Projects\LocalSearch\Local-Search\bin\Debug\Local-Search.exe.config
+C:\Users\Joshua\Documents\Visual Studio 2017\Projects\LocalSearch\Local-Search\bin\Debug\Local-Search.exe
+C:\Users\Joshua\Documents\Visual Studio 2017\Projects\LocalSearch\Local-Search\bin\Debug\Local-Search.pdb
+C:\Users\Joshua\Documents\Visual Studio 2017\Projects\LocalSearch\Local-Search\obj\Debug\Local-Search.csproj.CoreCompileInputs.cache
+C:\Users\Joshua\Documents\Visual Studio 2017\Projects\LocalSearch\Local-Search\obj\Debug\Local-Search.exe
+C:\Users\Joshua\Documents\Visual Studio 2017\Projects\LocalSearch\Local-Search\obj\Debug\Local-Search.pdb

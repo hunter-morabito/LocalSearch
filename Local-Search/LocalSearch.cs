@@ -20,9 +20,17 @@ namespace Local_Search
             Grid grid = new Grid(11/*int.Parse(Console.ReadLine())*/);
             Console.WriteLine();
 
+            grid.Evaluate();
+
+            grid.HillClimb(4000);
+
+            grid.PrintDepth();
+
             LocalSearch ls = new LocalSearch();
             Console.WriteLine("Enter task number: ");
+
             int task = int.Parse(Console.ReadLine());
+
             switch (task)
             {
                 case 1:
@@ -41,11 +49,6 @@ namespace Local_Search
             }
 
 
-            grid.Evaluate();
-
-            grid.HillClimb(4000);
-
-            grid.PrintDepth();
 
             Console.WriteLine();
 
@@ -69,7 +72,7 @@ namespace Local_Search
             int n = int.Parse(Console.ReadLine());
             Check(n);
 
-            return new Grid(n); 
+            return new Grid(n);
         }
 
         public static void Task2()
