@@ -146,6 +146,7 @@ namespace Local_Search
             Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
 
 
+
         }
         #endregion
 
@@ -187,10 +188,13 @@ namespace Local_Search
             //compare new Max to Down
             maxValue = Math.Max(maxValue, (col - 1));
 
+
+
+
             //return random int between 1 and maxvalue
             return rand.Next(minValue, maxValue);
         }
-
+       
         //gets random grid coordinate
         private Coordinate getRandCoordinate()
         {
@@ -209,6 +213,7 @@ namespace Local_Search
         #endregion
 
         #region Print Functions
+
         public void PrintGrid()
         {
             Console.WriteLine("Grid:");
