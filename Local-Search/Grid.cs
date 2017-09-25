@@ -24,13 +24,10 @@ namespace Local_Search
         //Grid construct
         public Grid(int n)
         {
-            //set random var
             rand = new Random();
-            //number of rows
             NumOfRows = n;
-            //number of columns
             NumOfCol = n;
-            //initializes space array
+
             cells = new CellNode[NumOfRows, NumOfCol];
 
             //gives every space in array a value
@@ -49,6 +46,33 @@ namespace Local_Search
             cells[NumOfRows - 1, NumOfCol - 1] = new CellNode(0, NumOfRows - 1, NumOfCol - 1);
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
 
+        }
+
+        //constructor for input text files
+        public Grid(System.IO.StreamReader file) {
+            
+            string line;
+            int n, count = 0;
+            n = int.Parse(file.ReadLine());
+            cells = new CellNode[n, n];
+
+            while((line = file.ReadLine()) != null) {
+                int c = 0;
+                for (int j = 0; j < line.Length; j++)
+                {
+                    if (char.IsNumber(line[j])) {
+                        cells[count, c] = new CellNode(int.Parse(line[j].ToString()), count, c);
+                        Console.Write(cells[count, c].moveNum + " ");
+                        c++;
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            count++;
+            file.Close();
+
+            goalCoordinate = new Coordinate(n - 1, n - 1);
         }
 
         //contructor to duplicate grid
@@ -162,7 +186,7 @@ namespace Local_Search
             //return random int between 1 and maxvalue
             return rand.Next(minValue, maxValue);
         }
-        #region util
+      
         //gets random grid coordinate
         private Coordinate getRandCoordinate()
         {

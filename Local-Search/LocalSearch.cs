@@ -21,9 +21,13 @@ namespace Local_Search
             switch (task)
             {
                 case 1:
-                    Task1().PrintGrid();
+                    ls.grid = Task1();
+                    ls.grid.PrintGrid();
                     break; 
                 case 2:
+                    ls.grid = Task2();
+                    ls.grid.PrintGrid();
+                    break;
                 case 3:
                 case 4:
                 case 5:
@@ -35,33 +39,7 @@ namespace Local_Search
                     break;
             }
 
-<<<<<<< HEAD
 
-
-            //grid.makeExample1();
-            //grid.PrintGrid();
-            /*GridTree gridTree = new GridTree(ref grid);
-=======
-            //sets grid to example in task 2
-            grid.makeExample1();
-            grid.PrintGrid();
-            //Task2
-            grid.Evaluate();
->>>>>>> 3d6867dfc4a636fb4b07188b417740fa7d5c2eb7
-            grid.PrintDepth();
-            Console.WriteLine();
-            //Task3
-            //grid.HillClimb(5);
-
-            /*grid.makeExample2();
-            grid.PrintGrid();
-            gridTree = new GridTree(ref grid);
-<<<<<<< HEAD
-            grid.PrintDepth();
-
-            Console.WriteLine("Enter the number of iterations for hill climbing process: ");
-            int x = Console.Read();
-            Console.WriteLine(x);*/
         }
 
 
@@ -72,9 +50,7 @@ namespace Local_Search
                 Console.Error.WriteLine("n must be 5, 7, 9, or 11.");
                 System.Environment.Exit(1);
             }
-=======
-            grid.PrintDepth();*/
->>>>>>> 3d6867dfc4a636fb4b07188b417740fa7d5c2eb7
+
         }
 
         public static Grid Task1()
@@ -86,7 +62,7 @@ namespace Local_Search
             return new Grid(n); 
         }
 
-        public static void Task2()
+        public static Grid Task2()
         {
 			Console.WriteLine("Enter the name of the text file: ");
 			string name = Console.ReadLine();
@@ -94,9 +70,8 @@ namespace Local_Search
 					  new System.IO.StreamReader("../../../../../Downloads/" + name);
 
 
-			int n = int.Parse(file.ReadLine());
-			Console.WriteLine();
-
+            Grid grid = new Grid(file);
+            return grid;
 		}
     }
 }

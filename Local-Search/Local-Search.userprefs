@@ -1,11 +1,9 @@
 ﻿<Properties StartupConfiguration="{3923D813-0308-4029-83C6-97D56FBC665A}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="CellNode.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Grid.cs">
     <Files>
-      <File FileName="Grid.cs" Line="165" Column="7" />
-      <File FileName="LocalSearch.cs" Line="49" Column="1" />
-      <File FileName="test.txt" Line="1" Column="2" />
-      <File FileName="GridTree.cs" Line="1" Column="1" />
-      <File FileName="Coordinate.cs" Line="1" Column="1" />
+      <File FileName="Grid.cs" Line="69" Column="37" />
+      <File FileName="LocalSearch.cs" Line="37" Column="36" />
+      <File FileName="GridTree.cs" Line="74" Column="39" />
       <File FileName="CellNode.cs" Line="14" Column="31" />
     </Files>
   </MonoDevelop.Ide.Workbench>
