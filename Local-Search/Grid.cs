@@ -141,8 +141,12 @@ namespace Local_Search
             //loop
             Grid testGrid;
             int numOfIterations = 0;
-            //for (int i = 0; i < iterations; i++)
-            while (value > 3)
+
+            //USED FOR TESTING
+            //while(value < 3) {
+            //USED FOR TESTING 
+
+            for (int i = 0; i < iterations; i++)
             {
                 numOfIterations += 1;
                 //make new grid copy
@@ -179,8 +183,9 @@ namespace Local_Search
                         //Console.WriteLine("Old Grid Value: " + value + "; New Grid Value: " + testGrid.value);
                     }
             }
-            Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
-
+            //USED FOR TESTING
+            //Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
+            //USED FOR TESTING
 
 
         }
