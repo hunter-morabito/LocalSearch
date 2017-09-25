@@ -51,7 +51,7 @@ namespace Local_Search
         }
 
         //constructor for input text files
-        public Grid(System.IO.StreamReader file) 
+        public Grid(System.IO.StreamReader file)
         {
             //set random value
 
@@ -64,16 +64,20 @@ namespace Local_Search
             {
                 cells = new CellNode[n, n];
                 NumOfCol = NumOfRows = n;
-            } else {
+            }
+            else
+            {
                 Console.Error.WriteLine("error: not a valid number");
                 System.Environment.Exit(1);
             }
 
-            while((line = file.ReadLine()) != null) { // continue reading from the file, line by line, until we reach the end
+            while ((line = file.ReadLine()) != null)
+            { // continue reading from the file, line by line, until we reach the end
                 int col = 0; // variable for which column spot we are on; it resets to zero when on a new row (line) 
                 for (int j = 0; j < line.Length; j++)
                 {
-                    if (char.IsNumber(line[j])) { // if the current line's spot is a number, then we add that number into the corresponding cell. 
+                    if (char.IsNumber(line[j]))
+                    { // if the current line's spot is a number, then we add that number into the corresponding cell. 
                         int moveNum = int.Parse(line[j].ToString());
                         cells[count, col] = new CellNode(moveNum, count, col);
                         //Console.WriteLine("number is " + moveNum);
@@ -83,7 +87,7 @@ namespace Local_Search
                         col++;
                     }
                 }
-               
+
                 count++;
             }
 
@@ -148,15 +152,18 @@ namespace Local_Search
         {
             //loop
             Grid testGrid;
-            //int numOfIterations = 0;
-            goalCoordinate.ToString();
+            bool oldGridSolvable = true;
+
+            if (value < 0)
+                oldGridSolvable = false;
+
             //USED FOR TESTING
             //while(value < 3) {
             //USED FOR TESTING 
 
             for (int i = 0; i < iterations; i++)
             {
-                
+
                 //make new grid copy
                 testGrid = new Grid(this);
                 //Console.WriteLine("Old Grid:");
@@ -164,14 +171,11 @@ namespace Local_Search
 
                 //get a rand coordinate thats not the goal
                 Coordinate randomCoordinate = getRandCoordinate();
-                Console.WriteLine("Coordinate: ");
-                randomCoordinate.ToString();
 
                 //loops until the cell in the new coordinate has a different moveNum
                 do
                 {
                     testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
-                    Console.WriteLine("Num of moves" + testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum);
                 } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
                 //Console.WriteLine("New Grid:");
                 //testGrid.PrintGrid();
@@ -179,27 +183,51 @@ namespace Local_Search
                 //evaluate testGrid to get its value
                 testGrid.Evaluate();
 
-                //make sure goal is achieveable
-                if (testGrid.value >= 0)
-                    //check to see if grid has improved
-                    if (testGrid.value <= value)
+                //check to see if grid is solvable
+                if (value >= 0)
+                {
+                    //check to see if new grid is solvable
+                    if (testGrid.value >= 0)
+                    {
+                        //check to see if grid has improved
+                        if (testGrid.value <= value)
+                        {
+                            //copy cells from test grid to this grid
+                            CopyGrid(ref testGrid);
+                        }
+                    }
+                }
+                //grid is not solvable
+                else
+                {
+                    //check to see if new grid has improved
+                    if (testGrid.value >= value)
                     {
                         //copy cells from test grid to this grid
-                        for (int row = 0; row < NumOfRows; row++)
-                            for (int col = 0; col < NumOfCol; col++)
-                                cells[row, col] = testGrid.cells[row, col];
-                        value = testGrid.value;
-                        //Console.WriteLine("Old Grid Value: " + value + "; New Grid Value: " + testGrid.value);
+                        CopyGrid(ref testGrid);
                     }
+                }
+
+
             }
             //USED FOR TESTING
             //Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
             //USED FOR TESTING
-
+            ToString();
+            Console.WriteLine("Value of the grid after " + iterations + " iterations is: " + value);
         }
         #endregion
 
         #region Cell Functions
+
+        private void CopyGrid(ref Grid testGrid)
+        {
+            for (int row = 0; row < NumOfRows; row++)
+                for (int col = 0; col < NumOfCol; col++)
+                    cells[row, col] = testGrid.cells[row, col];
+            value = testGrid.value;
+        }
+
         internal bool IsLegalCell(CellNode cellNode)
         {
             if (!IsLegalUp(cellNode))
@@ -231,12 +259,12 @@ namespace Local_Search
             int minValue = 1;
             int maxValue;
             //find Max of Left and Right
-            maxValue = Math.Max(NumOfRows  - row , row);
+            maxValue = Math.Max(NumOfRows - row, row);
             //compare new Max to Up
-            maxValue = Math.Max(maxValue, NumOfCol   - col);
+            maxValue = Math.Max(maxValue, NumOfCol - col);
             //compare new Max to Down
             maxValue = Math.Max(maxValue, col);
-            
+
             //return random int between 1 and maxvalue
             return rand.Next(minValue, maxValue);
         }
