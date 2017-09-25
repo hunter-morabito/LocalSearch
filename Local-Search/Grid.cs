@@ -24,13 +24,10 @@ namespace Local_Search
         //Grid construct
         public Grid(int n)
         {
-            //set random var
             rand = new Random();
-            //number of rows
             NumOfRows = n;
-            //number of columns
             NumOfCol = n;
-            //initializes space array
+
             cells = new CellNode[NumOfRows, NumOfCol];
 
             //gives every space in array a value
@@ -39,9 +36,9 @@ namespace Local_Search
                 for (int col = 0; col < n; col++)
                 {
                     //returns random legal value
-                    int value = getRandMoveNum(row, col);
+                    int moveNum = getRandMoveNum(row, col);
                     //sets space value
-                    cells[row, col] = new CellNode(value, row, col);
+                    cells[row, col] = new CellNode(moveNum, row, col);
                 }
             }
 
@@ -49,6 +46,45 @@ namespace Local_Search
             cells[NumOfRows - 1, NumOfCol - 1] = new CellNode(0, NumOfRows - 1, NumOfCol - 1);
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
 
+        }
+
+        //constructor for input text files
+        public Grid(System.IO.StreamReader file) 
+        {
+            
+            string line; // variable to read the file line by line
+            int n, count = 0; // n is the output for the first line (size of matrix). 
+            // if it parses a number, it will create the cells[n, n];
+            if (int.TryParse(file.ReadLine(), out n))
+            {
+                cells = new CellNode[n, n];
+                NumOfCol = NumOfRows = n;
+            } else {
+                Console.Error.WriteLine("error: not a valid number");
+                System.Environment.Exit(1);
+            }
+
+            while((line = file.ReadLine()) != null) { // continue reading from the file, line by line, until we reach the end
+                int c = 0; // variable for which column spot we are on; it resets to zero when on a new row (line) 
+                for (int j = 0; j < line.Length; j++)
+                {
+                    if (char.IsNumber(line[j])) { // if the current line's spot is a number, then we add that number into the corresponding cell. 
+                        int moveNum = int.Parse(line[j].ToString());
+                        cells[count, c] = new CellNode(moveNum, count, c);
+                        //Console.WriteLine("number is " + moveNum);
+                        //Console.WriteLine("row is: " + count + " and col is: " + c);
+                        //Console.Write(cells[count, c].moveNum + " ");
+                        // when the new CellNode instance is created, it prints properly, but in LocalSearch.cs, it doesn't print at all..
+                        c++;
+                    }
+                }
+               
+                count++;
+            }
+
+            file.Close();
+
+            goalCoordinate = new Coordinate(n - 1, n - 1);
         }
 
         //contructor to duplicate grid
@@ -194,7 +230,7 @@ namespace Local_Search
             //return random int between 1 and maxvalue
             return rand.Next(minValue, maxValue);
         }
-       
+
         //gets random grid coordinate
         private Coordinate getRandCoordinate()
         {
@@ -246,7 +282,7 @@ namespace Local_Search
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("\nValue of Function is: " + value);
+            Console.WriteLine("\nValue of the grid is: " + value);
 
         }
 
