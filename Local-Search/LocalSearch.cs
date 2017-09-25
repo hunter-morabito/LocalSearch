@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,16 +18,15 @@ namespace Local_Search
         {
 
 
-            Console.Write("Enter n for the nxn matrix: ");
-            Grid grid = new Grid(11/*int.Parse(Console.ReadLine())*/);
-            Console.WriteLine();
+            //Console.Write("Enter n for the nxn matrix: ");
+            //Grid grid = new Grid(5/*int.Parse(Console.ReadLine())*/);
+            //Console.WriteLine();
+           
+            //grid.Evaluate();
 
-            grid.Evaluate();
+            //grid.HillClimb(4000);
 
-            grid.HillClimb(4000);
-
-            grid.PrintDepth();
-
+            // grid.PrintDepth();
 
             LocalSearch ls = new LocalSearch();
             bool on = true;
@@ -83,6 +83,7 @@ namespace Local_Search
                         break;
                 }
             }
+           
         }
 
 
@@ -109,8 +110,13 @@ namespace Local_Search
         {
 			Console.WriteLine("Enter the name of the text file: ");
 			string name = Console.ReadLine();
-			System.IO.StreamReader file =
-					  new System.IO.StreamReader("../../../../../Downloads/" + name);
+
+            //Josh's Path for Files
+            /*System.IO.StreamReader file =
+					  new System.IO.StreamReader("../../../../../Downloads/" + name);*/
+
+            //Hunter's Path for files
+            StreamReader file = new StreamReader(Directory.GetCurrentDirectory() + "\\" + name);
             
             return new Grid(file);
 		}

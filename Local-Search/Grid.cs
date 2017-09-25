@@ -46,12 +46,17 @@ namespace Local_Search
             cells[NumOfRows - 1, NumOfCol - 1] = new CellNode(0, NumOfRows - 1, NumOfCol - 1);
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
 
+            //Evaluate Grid
+            Evaluate();
         }
 
         //constructor for input text files
         public Grid(System.IO.StreamReader file) 
         {
-            
+            //set random value
+
+            rand = new Random();
+
             string line; // variable to read the file line by line
             int n, count = 0; // n is the output for the first line (size of matrix). 
             // if it parses a number, it will create the cells[n, n];
@@ -65,17 +70,17 @@ namespace Local_Search
             }
 
             while((line = file.ReadLine()) != null) { // continue reading from the file, line by line, until we reach the end
-                int c = 0; // variable for which column spot we are on; it resets to zero when on a new row (line) 
+                int col = 0; // variable for which column spot we are on; it resets to zero when on a new row (line) 
                 for (int j = 0; j < line.Length; j++)
                 {
                     if (char.IsNumber(line[j])) { // if the current line's spot is a number, then we add that number into the corresponding cell. 
                         int moveNum = int.Parse(line[j].ToString());
-                        cells[count, c] = new CellNode(moveNum, count, c);
+                        cells[count, col] = new CellNode(moveNum, count, col);
                         //Console.WriteLine("number is " + moveNum);
                         //Console.WriteLine("row is: " + count + " and col is: " + c);
                         //Console.Write(cells[count, c].moveNum + " ");
                         // when the new CellNode instance is created, it prints properly, but in LocalSearch.cs, it doesn't print at all..
-                        c++;
+                        col++;
                     }
                 }
                
@@ -85,6 +90,8 @@ namespace Local_Search
             file.Close();
 
             goalCoordinate = new Coordinate(n - 1, n - 1);
+
+            Evaluate();
         }
 
         //contructor to duplicate grid
@@ -121,7 +128,9 @@ namespace Local_Search
 
         internal void AssignValue()
         {
+            //gets depth 
             value = cells[NumOfRows - 1, NumOfCol - 1].depth;
+            //if the value is -1, count cells that are not on GridTree
             if (value == -1)
             {
                 value = 0;
@@ -130,7 +139,6 @@ namespace Local_Search
                     for (int j = 0; j < NumOfCol; j++)
                         if (cells[i, j].depth == -1)
                             value -= 1;
-
             }
         }
         #endregion
@@ -140,15 +148,15 @@ namespace Local_Search
         {
             //loop
             Grid testGrid;
-            int numOfIterations = 0;
-
+            //int numOfIterations = 0;
+            goalCoordinate.ToString();
             //USED FOR TESTING
             //while(value < 3) {
             //USED FOR TESTING 
 
             for (int i = 0; i < iterations; i++)
             {
-                numOfIterations += 1;
+                
                 //make new grid copy
                 testGrid = new Grid(this);
                 //Console.WriteLine("Old Grid:");
@@ -156,13 +164,14 @@ namespace Local_Search
 
                 //get a rand coordinate thats not the goal
                 Coordinate randomCoordinate = getRandCoordinate();
-                //Console.WriteLine("Coordinate: ");
+                Console.WriteLine("Coordinate: ");
                 randomCoordinate.ToString();
 
                 //loops until the cell in the new coordinate has a different moveNum
                 do
                 {
                     testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
+                    Console.WriteLine("Num of moves" + testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum);
                 } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
                 //Console.WriteLine("New Grid:");
                 //testGrid.PrintGrid();
@@ -186,7 +195,6 @@ namespace Local_Search
             //USED FOR TESTING
             //Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
             //USED FOR TESTING
-
 
         }
         #endregion
@@ -223,15 +231,12 @@ namespace Local_Search
             int minValue = 1;
             int maxValue;
             //find Max of Left and Right
-            maxValue = Math.Max((NumOfRows - row), (row - 1));
+            maxValue = Math.Max(NumOfRows  - row , row);
             //compare new Max to Up
-            maxValue = Math.Max(maxValue, (NumOfCol - col));
+            maxValue = Math.Max(maxValue, NumOfCol   - col);
             //compare new Max to Down
-            maxValue = Math.Max(maxValue, (col - 1));
-
-
-
-
+            maxValue = Math.Max(maxValue, col);
+            
             //return random int between 1 and maxvalue
             return rand.Next(minValue, maxValue);
         }
@@ -246,6 +251,7 @@ namespace Local_Search
             {
                 //init random coordinate
                 randCoordinate = new Coordinate(rand.Next(0, NumOfRows), rand.Next(0, NumOfCol));
+                //randCoordinate.ToString();
             } while (randCoordinate.Equals(goalCoordinate));
             //check to see if its the same at the goal coordinate
 
