@@ -212,9 +212,9 @@ namespace Local_Search
             }
             //USED FOR TESTING
             //Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
-            //USED FOR TESTING
             ToString();
             Console.WriteLine("Value of the grid after " + iterations + " iterations is: " + value);
+            //USED FOR TESTING
         }
         #endregion
 
