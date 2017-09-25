@@ -24,12 +24,6 @@ namespace Local_Search
 
             grid.HillClimb(4000);
 
-<<<<<<< HEAD
-            grid.makeExample1();//hello
-            grid.PrintGrid();
-            GridTree gridTree = new GridTree(ref grid);
-=======
->>>>>>> 546bce35658952b92ca80e39b82bb00eb8e788cf
             grid.PrintDepth();
 
             LocalSearch ls = new LocalSearch();
