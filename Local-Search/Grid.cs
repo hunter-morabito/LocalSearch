@@ -36,9 +36,9 @@ namespace Local_Search
                 for (int col = 0; col < n; col++)
                 {
                     //returns random legal value
-                    int value = getRandMoveNum(row, col);
+                    int moveNum = getRandMoveNum(row, col);
                     //sets space value
-                    cells[row, col] = new CellNode(value, row, col);
+                    cells[row, col] = new CellNode(moveNum, row, col);
                 }
             }
 
@@ -49,27 +49,39 @@ namespace Local_Search
         }
 
         //constructor for input text files
-        public Grid(System.IO.StreamReader file) {
+        public Grid(System.IO.StreamReader file) 
+        {
             
-            string line;
-            int n, count = 0;
-            n = int.Parse(file.ReadLine());
-            cells = new CellNode[n, n];
+            string line; // variable to read the file line by line
+            int n, count = 0; // n is the output for the first line (size of matrix). 
+            // if it parses a number, it will create the cells[n, n];
+            if (int.TryParse(file.ReadLine(), out n))
+            {
+                cells = new CellNode[n, n];
+                NumOfCol = NumOfRows = n;
+            } else {
+                Console.Error.WriteLine("error: not a valid number");
+                System.Environment.Exit(1);
+            }
 
-            while((line = file.ReadLine()) != null) {
-                int c = 0;
+            while((line = file.ReadLine()) != null) { // continue reading from the file, line by line, until we reach the end
+                int c = 0; // variable for which column spot we are on; it resets to zero when on a new row (line) 
                 for (int j = 0; j < line.Length; j++)
                 {
-                    if (char.IsNumber(line[j])) {
-                        cells[count, c] = new CellNode(int.Parse(line[j].ToString()), count, c);
-                        Console.Write(cells[count, c].moveNum + " ");
+                    if (char.IsNumber(line[j])) { // if the current line's spot is a number, then we add that number into the corresponding cell. 
+                        int moveNum = int.Parse(line[j].ToString());
+                        cells[count, c] = new CellNode(moveNum, count, c);
+                        //Console.WriteLine("number is " + moveNum);
+                        //Console.WriteLine("row is: " + count + " and col is: " + c);
+                        //Console.Write(cells[count, c].moveNum + " ");
+                        // when the new CellNode instance is created, it prints properly, but in LocalSearch.cs, it doesn't print at all..
                         c++;
                     }
                 }
-                Console.WriteLine();
+               
+                count++;
             }
 
-            count++;
             file.Close();
 
             goalCoordinate = new Coordinate(n - 1, n - 1);
@@ -79,7 +91,7 @@ namespace Local_Search
         public Grid(Grid oldGrid)
         {
             //set random var
-            rand = new Random();
+            rand = oldGrid.rand;
             //set row number
             NumOfRows = oldGrid.NumOfRows;
             //number of columns
@@ -91,7 +103,7 @@ namespace Local_Search
             {
                 for (int col = 0; col < NumOfCol; col++)
                 {
-                    cells[row, col].moveNum = oldGrid.cells[row, col].moveNum;
+                    cells[row, col] = new CellNode(oldGrid.cells[row, col].moveNum, row, col);
                 }
             }
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
@@ -127,15 +139,50 @@ namespace Local_Search
         public void HillClimb(int iterations)
         {
             //loop
-            //make new grid copy
-            Grid testGrid = new Grid(this);
-            //get a rand coordinate thats not the goal
-            Random rand = new Random();
+            Grid testGrid;
+            int numOfIterations = 0;
+            //for (int i = 0; i < iterations; i++)
+            while (value > 3)
+            {
+                numOfIterations += 1;
+                //make new grid copy
+                testGrid = new Grid(this);
+                //Console.WriteLine("Old Grid:");
+                //testGrid.PrintGrid();
+
+                //get a rand coordinate thats not the goal
+                Coordinate randomCoordinate = getRandCoordinate();
+                //Console.WriteLine("Coordinate: ");
+                randomCoordinate.ToString();
+
+                //loops until the cell in the new coordinate has a different moveNum
+                do
+                {
+                    testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
+                } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
+                //Console.WriteLine("New Grid:");
+                //testGrid.PrintGrid();
+
+                //evaluate testGrid to get its value
+                testGrid.Evaluate();
+
+                //make sure goal is achieveable
+                if (testGrid.value >= 0)
+                    //check to see if grid has improved
+                    if (testGrid.value <= value)
+                    {
+                        //copy cells from test grid to this grid
+                        for (int row = 0; row < NumOfRows; row++)
+                            for (int col = 0; col < NumOfCol; col++)
+                                cells[row, col] = testGrid.cells[row, col];
+                        value = testGrid.value;
+                        //Console.WriteLine("Old Grid Value: " + value + "; New Grid Value: " + testGrid.value);
+                    }
+            }
+            Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
 
 
-            //change coordinate to DIFFERENT LEGAL number
-            //evaluate new grid
-            // comare values
+
         }
         #endregion
 
@@ -149,17 +196,14 @@ namespace Local_Search
                             return false;
             return true;
         }
-
         internal bool IsLegalUp(CellNode cellNode)
         {
             return (cellNode.coordinate.row - cellNode.moveNum) >= 0 ? true : false;
         }
-
         internal bool IsLegalDown(CellNode cellNode)
         {
             return ((cellNode.coordinate.row + cellNode.moveNum) < cells.GetLength(0)) ? true : false;
         }
-
         internal bool IsLegalLeft(CellNode cellNode)
         {
             return (cellNode.coordinate.col - cellNode.moveNum) >= 0 ? true : false;
@@ -186,7 +230,7 @@ namespace Local_Search
             //return random int between 1 and maxvalue
             return rand.Next(minValue, maxValue);
         }
-      
+
         //gets random grid coordinate
         private Coordinate getRandCoordinate()
         {
@@ -196,8 +240,8 @@ namespace Local_Search
             do
             {
                 //init random coordinate
-                randCoordinate = new Coordinate(rand.Next(0, NumOfRows - 1), rand.Next(0, NumOfCol - 1));
-            } while (!randCoordinate.Equals(goalCoordinate));
+                randCoordinate = new Coordinate(rand.Next(0, NumOfRows), rand.Next(0, NumOfCol));
+            } while (randCoordinate.Equals(goalCoordinate));
             //check to see if its the same at the goal coordinate
 
             return randCoordinate;
@@ -238,7 +282,7 @@ namespace Local_Search
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("\nValue of Function is: " + value);
+            Console.WriteLine("\nValue of the grid is: " + value);
 
         }
 

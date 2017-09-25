@@ -16,6 +16,11 @@ namespace Local_Search
             this.row = row;
             this.col = col;
         }
+            
+        public void ToString()
+        {
+             Console.WriteLine("(" + row + "," + col + ")");
+        }
 
         public bool Equals(Coordinate coordinate)
         {
