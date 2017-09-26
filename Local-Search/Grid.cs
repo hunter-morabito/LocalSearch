@@ -60,7 +60,6 @@ namespace Local_Search
             string line; // variable to read the file line by line
             int n, count = 0; // n is the output for the first line (size of matrix). 
             // if it parses a number, it will create the cells[n, n];
-            rand = new Random(); 
             if (int.TryParse(file.ReadLine(), out n))
             {
                 cells = new CellNode[n, n];
@@ -157,6 +156,7 @@ namespace Local_Search
             //loop
             Grid testGrid;
 
+            //loops until given iterations hit
             for (int i = 0; i < iterations; i++)
             {
 
@@ -171,7 +171,6 @@ namespace Local_Search
                 {
                     testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
                 } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
-
 
                 UpdateGrid(testGrid);
 
@@ -230,13 +229,11 @@ namespace Local_Search
                 //check to see if new grid is solvable
                 if (testGrid.value >= 0)
                 {
-
-                        for (int row = 0; row < NumOfRows; row++)
-                            for (int col = 0; col < NumOfCol; col++)
-                                cells[row, col] = this.cells[row, col];
-                        testGrid.value = value;
-                        //Console.WriteLine("Old Grid Value: " + value + "; New Grid Value: " + testGrid.value);
-
+                    //check to see if grid has improved
+                    if (testGrid.value <= value)
+                    {
+                        //copy cells from test grid to this grid
+                        CopyGrid(ref testGrid);
                     }
                 }
             }
@@ -250,7 +247,7 @@ namespace Local_Search
                     CopyGrid(ref testGrid);
                 }
             }
-
+        }
         #endregion
 
         #region Cell Functions
@@ -296,12 +293,11 @@ namespace Local_Search
             int minValue = 1;
             int maxValue;
             //find Max of Left and Right
-
+            maxValue = Math.Max(NumOfRows - row, row);
             //compare new Max to Up
             maxValue = Math.Max(maxValue, NumOfCol - col);
             //compare new Max to Down
             maxValue = Math.Max(maxValue, col);
-
 
             //return random int between 1 and maxvalue
             return rand.Next(minValue, maxValue);
@@ -311,8 +307,6 @@ namespace Local_Search
         private Coordinate getRandCoordinate()
         {
             //init
-
-
             Coordinate randCoordinate;
             //loop through at least once
             do
