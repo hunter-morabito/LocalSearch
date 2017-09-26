@@ -152,22 +152,12 @@ namespace Local_Search
         {
             //loop
             Grid testGrid;
-            bool oldGridSolvable = true;
-
-            if (value < 0)
-                oldGridSolvable = false;
-
-            //USED FOR TESTING
-            //while(value < 3) {
-            //USED FOR TESTING 
 
             for (int i = 0; i < iterations; i++)
             {
 
                 //make new grid copy
                 testGrid = new Grid(this);
-                //Console.WriteLine("Old Grid:");
-                //testGrid.PrintGrid();
 
                 //get a rand coordinate thats not the goal
                 Coordinate randomCoordinate = getRandCoordinate();
@@ -177,8 +167,6 @@ namespace Local_Search
                 {
                     testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
                 } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
-                //Console.WriteLine("New Grid:");
-                //testGrid.PrintGrid();
 
                 //evaluate testGrid to get its value
                 testGrid.Evaluate();
@@ -211,7 +199,6 @@ namespace Local_Search
 
             }
             //USED FOR TESTING
-            //Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
             ToString();
             Console.WriteLine("Value of the grid after " + iterations + " iterations is: " + value);
             //USED FOR TESTING
@@ -228,6 +215,7 @@ namespace Local_Search
             value = testGrid.value;
         }
 
+        #region Legal Checks
         internal bool IsLegalCell(CellNode cellNode)
         {
             if (!IsLegalUp(cellNode))
@@ -253,6 +241,7 @@ namespace Local_Search
         {
             return (cellNode.coordinate.col + cellNode.moveNum) < cells.GetLength(1) ? true : false;
         }
+        #endregion
 
         private int getRandMoveNum(int row, int col)
         {
