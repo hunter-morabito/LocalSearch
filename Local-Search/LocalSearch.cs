@@ -18,15 +18,10 @@ namespace Local_Search
         {
 
 
-            //Console.Write("Enter n for the nxn matrix: ");
-            //Grid grid = new Grid(5/*int.Parse(Console.ReadLine())*/);
-            //Console.WriteLine();
+            //Console.Write("Enter n for the nxn matrix for task 4: ");
+           // Grid grid = new Grid(int.Parse(Console.ReadLine()));
+            //grid.RandomRestarts(1, 50);
            
-            //grid.Evaluate();
-
-            //grid.HillClimb(4000);
-
-            // grid.PrintDepth();
 
             LocalSearch ls = new LocalSearch();
             bool on = true;
@@ -75,6 +70,7 @@ namespace Local_Search
 
                         break;
                     case 4:
+                        
                     case 5:
                     case 6:
                     case 7:
@@ -94,7 +90,6 @@ namespace Local_Search
                 Console.Error.WriteLine("n must be 5, 7, 9, or 11");
                 System.Environment.Exit(1);
             }
-
         }
 
         public static Grid Task1()

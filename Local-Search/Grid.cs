@@ -118,6 +118,7 @@ namespace Local_Search
                 }
             }
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
+            Evaluate();
         }
         #endregion
 
@@ -147,12 +148,15 @@ namespace Local_Search
         }
         #endregion
 
-        #region Task 3 Functions
+        #region Task 3 & 4 Functions
+        
+        //TASK 3
         public void HillClimb(int iterations)
         {
             //loop
             Grid testGrid;
 
+            //loops until given iterations hit
             for (int i = 0; i < iterations; i++)
             {
 
@@ -168,40 +172,71 @@ namespace Local_Search
                     testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
                 } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
 
-                //evaluate testGrid to get its value
-                testGrid.Evaluate();
-
-                //check to see if grid is solvable
-                if (value >= 0)
-                {
-                    //check to see if new grid is solvable
-                    if (testGrid.value >= 0)
-                    {
-                        //check to see if grid has improved
-                        if (testGrid.value <= value)
-                        {
-                            //copy cells from test grid to this grid
-                            CopyGrid(ref testGrid);
-                        }
-                    }
-                }
-                //grid is not solvable
-                else
-                {
-                    //check to see if new grid has improved
-                    if (testGrid.value >= value)
-                    {
-                        //copy cells from test grid to this grid
-                        CopyGrid(ref testGrid);
-                    }
-                }
-
+                UpdateGrid(testGrid);
 
             }
             //USED FOR TESTING
             ToString();
             Console.WriteLine("Value of the grid after " + iterations + " iterations is: " + value);
             //USED FOR TESTING
+        }
+        
+
+        //TASK 4
+        public void RandomRestarts(int numberOfRestarts, int iterationsPerRestart)
+        {
+            //copy the current grid as the new test grid
+            Grid testGrid = new Grid(this);
+            
+            //loop for as many restarts as user input
+            for(int restartCounter = 0; restartCounter < numberOfRestarts; restartCounter++)
+            {
+                /* Run the Hill Climb Method on the New Random state grid
+                 * If that random state test grid has a better value, then the 
+                 * current grid will copy the cells in the random state grid
+                 * into this grid object, and it will become the new best 
+                 * valued grid.
+                 */
+                testGrid.HillClimb(iterationsPerRestart);
+
+                //Update to the better valued grid
+                UpdateGrid(testGrid);
+
+                //generate new random state test grid
+                testGrid = new Grid(NumOfRows);
+                testGrid.PrintGrid();
+            }
+        }
+
+        private void UpdateGrid(Grid testGrid)
+        {
+            //evaluate testGrid to get its value
+            //testGrid.Evaluate();
+
+            //check to see if grid is solvable
+            if (value >= 0)
+            {
+                //check to see if new grid is solvable
+                if (testGrid.value >= 0)
+                {
+                    //check to see if grid has improved
+                    if (testGrid.value <= value)
+                    {
+                        //copy cells from test grid to this grid
+                        CopyGrid(ref testGrid);
+                    }
+                }
+            }
+            //grid is not solvable
+            else
+            {
+                //check to see if new grid has improved
+                if (testGrid.value >= value)
+                {
+                    //copy cells from test grid to this grid
+                    CopyGrid(ref testGrid);
+                }
+            }
         }
         #endregion
 
