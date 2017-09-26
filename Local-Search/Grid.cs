@@ -118,7 +118,7 @@ namespace Local_Search
                 }
             }
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
-            Evaluate();
+           
         }
         #endregion
 
@@ -171,12 +171,12 @@ namespace Local_Search
                 {
                     testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
                 } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
-
-                UpdateGrid(testGrid);
+                testGrid.Evaluate();
+                UpdateGrid(ref testGrid);
 
             }
             //USED FOR TESTING
-            ToString();
+            //ToString();
             //Console.WriteLine("Value of the grid after " + iterations + " iterations is: " + value);
             //USED FOR TESTING
         }
@@ -187,10 +187,9 @@ namespace Local_Search
         {
             //copy the current grid as the new test grid
             Grid testGrid = new Grid(this);
-
-            Console.WriteLine("Current Best Grid with value of " + value + ": ");
-            PrintGrid();
-
+            
+            //Console.WriteLine("Current Best Grid with value of " + value + ": ");
+            //PrintGrid();
             
             //loop for as many restarts as user input
             for (int restartCounter = 0; restartCounter < numberOfRestarts; restartCounter++)
@@ -207,7 +206,7 @@ namespace Local_Search
                 Console.WriteLine("Random Test Grid After Hill Climb with value of " + testGrid.value + ": ");
                 testGrid.PrintGrid();
                 //Update to the better valued grid
-                UpdateGrid(testGrid);
+                UpdateGrid(ref testGrid);
 
                 //generate new random state test grid
                 testGrid = new Grid(NumOfRows);
@@ -218,11 +217,8 @@ namespace Local_Search
             }
         }
 
-        private void UpdateGrid(Grid testGrid)
+        private void UpdateGrid(ref Grid testGrid)
         {
-            //evaluate testGrid to get its value
-            //testGrid.Evaluate();
-
             //check to see if grid is solvable
             if (value >= 0)
             {
@@ -335,6 +331,7 @@ namespace Local_Search
                 Console.WriteLine();
             }
             Console.WriteLine();
+            PrintValue();
         }
 
         public void PrintDepth()
@@ -355,8 +352,13 @@ namespace Local_Search
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("\nValue of the grid is: " + value);
+            PrintValue();
 
+        }
+
+        public void PrintValue()
+        {
+            Console.WriteLine("\nValue of the grid is: " + value);
         }
 
         //used as grid from example in assignment

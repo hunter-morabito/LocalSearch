@@ -17,10 +17,12 @@ namespace Local_Search
         public static void Main()
         {
 
-            Console.Write("Enter n for the nxn matrix for task 4: ");
-            Grid grid = new Grid(int.Parse(Console.ReadLine()));
-            grid.RandomRestarts(50, 50);
-
+            //Console.Write("Enter n for the nxn matrix for task 4: ");
+            //Grid grid = new Grid(int.Parse(Console.ReadLine()));
+            //grid.RandomRestarts(50, 50);
+            //grid.HillClimb(50);
+            //grid.PrintGrid();
+            
             LocalSearch ls = new LocalSearch();
             bool on = true;
             while (on)
@@ -61,6 +63,7 @@ namespace Local_Search
                         if ((i = int.Parse(Console.ReadLine())) >= 50)
                         {
                             ls.grid.HillClimb(i);
+                            ls.grid.PrintGrid();
                         } else {
                             Console.WriteLine("invalid number; returning to task selection...");
                             break;
