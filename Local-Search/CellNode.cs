@@ -11,7 +11,7 @@ namespace Local_Search
         public Coordinate coordinate;
 
         public int moveNum;
-        public int depth;//hellosjoshua
+        public int depth;
         public List<CellNode> children;
 
         public CellNode() { }

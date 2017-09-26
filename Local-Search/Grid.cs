@@ -46,12 +46,17 @@ namespace Local_Search
             cells[NumOfRows - 1, NumOfCol - 1] = new CellNode(0, NumOfRows - 1, NumOfCol - 1);
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
 
+            //Evaluate Grid
+            Evaluate();
         }
 
         //constructor for input text files
-        public Grid(System.IO.StreamReader file) 
+        public Grid(System.IO.StreamReader file)
         {
-            
+            //set random value
+
+            rand = new Random();
+
             string line; // variable to read the file line by line
             int n, count = 0; // n is the output for the first line (size of matrix). 
             // if it parses a number, it will create the cells[n, n];
@@ -60,32 +65,38 @@ namespace Local_Search
             {
                 cells = new CellNode[n, n];
                 NumOfCol = NumOfRows = n;
-            } else {
+            }
+            else
+            {
                 Console.Error.WriteLine("error: not a valid number");
                 System.Environment.Exit(1);
             }
 
-            while((line = file.ReadLine()) != null) { // continue reading from the file, line by line, until we reach the end
-                int c = 0; // variable for which column spot we are on; it resets to zero when on a new row (line) 
+            while ((line = file.ReadLine()) != null)
+            { // continue reading from the file, line by line, until we reach the end
+                int col = 0; // variable for which column spot we are on; it resets to zero when on a new row (line) 
                 for (int j = 0; j < line.Length; j++)
                 {
-                    if (char.IsNumber(line[j])) { // if the current line's spot is a number, then we add that number into the corresponding cell. 
+                    if (char.IsNumber(line[j]))
+                    { // if the current line's spot is a number, then we add that number into the corresponding cell. 
                         int moveNum = int.Parse(line[j].ToString());
-                        cells[count, c] = new CellNode(moveNum, count, c);
+                        cells[count, col] = new CellNode(moveNum, count, col);
                         //Console.WriteLine("number is " + moveNum);
                         //Console.WriteLine("row is: " + count + " and col is: " + c);
                         //Console.Write(cells[count, c].moveNum + " ");
                         // when the new CellNode instance is created, it prints properly, but in LocalSearch.cs, it doesn't print at all..
-                        c++;
+                        col++;
                     }
                 }
-               
+
                 count++;
             }
 
             file.Close();
 
             goalCoordinate = new Coordinate(n - 1, n - 1);
+
+            Evaluate();
         }
 
         //contructor to duplicate grid
@@ -108,6 +119,7 @@ namespace Local_Search
                 }
             }
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
+            Evaluate();
         }
         #endregion
 
@@ -122,7 +134,9 @@ namespace Local_Search
 
         internal void AssignValue()
         {
+            //gets depth 
             value = cells[NumOfRows - 1, NumOfCol - 1].depth;
+            //if the value is -1, count cells that are not on GridTree
             if (value == -1)
             {
                 value = 0;
@@ -131,59 +145,125 @@ namespace Local_Search
                     for (int j = 0; j < NumOfCol; j++)
                         if (cells[i, j].depth == -1)
                             value -= 1;
-
             }
         }
         #endregion
 
-        #region Task 3 Functions
+        #region Task 3 & 4 Functions
+        
+        //TASK 3
         public void HillClimb(int iterations)
         {
             //loop
             Grid testGrid;
-            int numOfIterations = 0;
+
             for (int i = 0; i < iterations; i++)
             {
-                numOfIterations += 1;
+
                 //make new grid copy
                 testGrid = new Grid(this);
 
                 //get a rand coordinate thats not the goal
                 Coordinate randomCoordinate = getRandCoordinate();
-                //Console.WriteLine("Coordinate: ");
-                randomCoordinate.ToString();
 
                 //loops until the cell in the new coordinate has a different moveNum
                 do
                 {
                     testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
                 } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
-                //Console.WriteLine("New Grid:");
-                //testGrid.PrintGrid();
 
-                //evaluate testGrid to get its value
-                this.Evaluate();
 
-                //make sure goal is achieveable
-                if (this.value >= 0)
-                    //check to see if grid has improved
-                    if (testGrid.value <=   value)
-                    {
-                        //copy cells from test grid to this grid
+                UpdateGrid(testGrid);
+
+            }
+            //USED FOR TESTING
+            ToString();
+            //Console.WriteLine("Value of the grid after " + iterations + " iterations is: " + value);
+            //USED FOR TESTING
+        }
+        
+
+        //TASK 4
+        public void RandomRestarts(int numberOfRestarts, int iterationsPerRestart)
+        {
+            //copy the current grid as the new test grid
+            Grid testGrid = new Grid(this);
+
+            Console.WriteLine("Current Best Grid with value of " + value + ": ");
+            PrintGrid();
+
+            
+            //loop for as many restarts as user input
+            for (int restartCounter = 0; restartCounter < numberOfRestarts; restartCounter++)
+            {
+                Console.WriteLine("New Random Test Grid with value of " + testGrid.value + ": ");
+                testGrid.PrintGrid();
+                /* Run the Hill Climb Method on the New Random state grid
+                 * If that random state test grid has a better value, then the 
+                 * current grid will copy the cells in the random state grid
+                 * into this grid object, and it will become the new best 
+                 * valued grid.
+                 */
+                testGrid.HillClimb(iterationsPerRestart);
+                Console.WriteLine("Random Test Grid After Hill Climb with value of " + testGrid.value + ": ");
+                testGrid.PrintGrid();
+                //Update to the better valued grid
+                UpdateGrid(testGrid);
+
+                //generate new random state test grid
+                testGrid = new Grid(NumOfRows);
+
+                Console.WriteLine("Current Best Grid with value of " + value + ": ");
+                PrintGrid();
+                Console.WriteLine();
+            }
+        }
+
+        private void UpdateGrid(Grid testGrid)
+        {
+            //evaluate testGrid to get its value
+            //testGrid.Evaluate();
+
+            //check to see if grid is solvable
+            if (value >= 0)
+            {
+                //check to see if new grid is solvable
+                if (testGrid.value >= 0)
+                {
+
                         for (int row = 0; row < NumOfRows; row++)
                             for (int col = 0; col < NumOfCol; col++)
                                 cells[row, col] = this.cells[row, col];
                         testGrid.value = value;
                         //Console.WriteLine("Old Grid Value: " + value + "; New Grid Value: " + testGrid.value);
+
                     }
+                }
+            }
+            //grid is not solvable
+            else
+            {
+                //check to see if new grid has improved
+                if (testGrid.value >= value)
+                {
+                    //copy cells from test grid to this grid
+                    CopyGrid(ref testGrid);
+                }
             }
 
-
-
-        }
         #endregion
 
         #region Cell Functions
+
+        private void CopyGrid(ref Grid testGrid)
+        {
+            for (int row = 0; row < NumOfRows; row++)
+                for (int col = 0; col < NumOfCol; col++)
+                    cells[row, col] = testGrid.cells[row, col];
+            value = testGrid.value;
+        }
+
+        #region Legal Checks
         internal bool IsLegalCell(CellNode cellNode)
         {
             if (!IsLegalUp(cellNode))
@@ -209,19 +289,18 @@ namespace Local_Search
         {
             return (cellNode.coordinate.col + cellNode.moveNum) < cells.GetLength(1) ? true : false;
         }
+        #endregion
 
         private int getRandMoveNum(int row, int col)
         {
             int minValue = 1;
             int maxValue;
             //find Max of Left and Right
-            maxValue = Math.Max(NumOfRows - row, row );
+
             //compare new Max to Up
             maxValue = Math.Max(maxValue, NumOfCol - col);
             //compare new Max to Down
             maxValue = Math.Max(maxValue, col);
-
-
 
 
             //return random int between 1 and maxvalue
@@ -240,6 +319,7 @@ namespace Local_Search
             {
                 //init random coordinate
                 randCoordinate = new Coordinate(rand.Next(0, NumOfRows), rand.Next(0, NumOfCol));
+                //randCoordinate.ToString();
             } while (randCoordinate.Equals(goalCoordinate));
             //check to see if its the same at the goal coordinate
 
