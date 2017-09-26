@@ -177,7 +177,7 @@ namespace Local_Search
             }
             //USED FOR TESTING
             ToString();
-            Console.WriteLine("Value of the grid after " + iterations + " iterations is: " + value);
+            //Console.WriteLine("Value of the grid after " + iterations + " iterations is: " + value);
             //USED FOR TESTING
         }
         
@@ -187,10 +187,16 @@ namespace Local_Search
         {
             //copy the current grid as the new test grid
             Grid testGrid = new Grid(this);
+
+            Console.WriteLine("Current Best Grid with value of " + value + ": ");
+            PrintGrid();
+
             
             //loop for as many restarts as user input
-            for(int restartCounter = 0; restartCounter < numberOfRestarts; restartCounter++)
+            for (int restartCounter = 0; restartCounter < numberOfRestarts; restartCounter++)
             {
+                Console.WriteLine("New Random Test Grid with value of " + testGrid.value + ": ");
+                testGrid.PrintGrid();
                 /* Run the Hill Climb Method on the New Random state grid
                  * If that random state test grid has a better value, then the 
                  * current grid will copy the cells in the random state grid
@@ -198,13 +204,17 @@ namespace Local_Search
                  * valued grid.
                  */
                 testGrid.HillClimb(iterationsPerRestart);
-
+                Console.WriteLine("Random Test Grid After Hill Climb with value of " + testGrid.value + ": ");
+                testGrid.PrintGrid();
                 //Update to the better valued grid
                 UpdateGrid(testGrid);
 
                 //generate new random state test grid
                 testGrid = new Grid(NumOfRows);
-                testGrid.PrintGrid();
+
+                Console.WriteLine("Current Best Grid with value of " + value + ": ");
+                PrintGrid();
+                Console.WriteLine();
             }
         }
 
