@@ -55,6 +55,7 @@ namespace Local_Search
             string line; // variable to read the file line by line
             int n, count = 0; // n is the output for the first line (size of matrix). 
             // if it parses a number, it will create the cells[n, n];
+            rand = new Random(); 
             if (int.TryParse(file.ReadLine(), out n))
             {
                 cells = new CellNode[n, n];
@@ -141,14 +142,11 @@ namespace Local_Search
             //loop
             Grid testGrid;
             int numOfIterations = 0;
-            //for (int i = 0; i < iterations; i++)
-            while (value > 3)
+            for (int i = 0; i < iterations; i++)
             {
                 numOfIterations += 1;
                 //make new grid copy
                 testGrid = new Grid(this);
-                //Console.WriteLine("Old Grid:");
-                //testGrid.PrintGrid();
 
                 //get a rand coordinate thats not the goal
                 Coordinate randomCoordinate = getRandCoordinate();
@@ -164,22 +162,21 @@ namespace Local_Search
                 //testGrid.PrintGrid();
 
                 //evaluate testGrid to get its value
-                testGrid.Evaluate();
+                this.Evaluate();
 
                 //make sure goal is achieveable
-                if (testGrid.value >= 0)
+                if (this.value >= 0)
                     //check to see if grid has improved
-                    if (testGrid.value <= value)
+                    if (testGrid.value <=   value)
                     {
                         //copy cells from test grid to this grid
                         for (int row = 0; row < NumOfRows; row++)
                             for (int col = 0; col < NumOfCol; col++)
-                                cells[row, col] = testGrid.cells[row, col];
-                        value = testGrid.value;
+                                cells[row, col] = this.cells[row, col];
+                        testGrid.value = value;
                         //Console.WriteLine("Old Grid Value: " + value + "; New Grid Value: " + testGrid.value);
                     }
             }
-            Console.WriteLine("Number of Iterations before value is 3: " + numOfIterations);
 
 
 
@@ -218,11 +215,11 @@ namespace Local_Search
             int minValue = 1;
             int maxValue;
             //find Max of Left and Right
-            maxValue = Math.Max((NumOfRows - row), (row - 1));
+            maxValue = Math.Max(NumOfRows - row, row );
             //compare new Max to Up
-            maxValue = Math.Max(maxValue, (NumOfCol - col));
+            maxValue = Math.Max(maxValue, NumOfCol - col);
             //compare new Max to Down
-            maxValue = Math.Max(maxValue, (col - 1));
+            maxValue = Math.Max(maxValue, col);
 
 
 
@@ -235,6 +232,8 @@ namespace Local_Search
         private Coordinate getRandCoordinate()
         {
             //init
+
+
             Coordinate randCoordinate;
             //loop through at least once
             do
