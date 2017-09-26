@@ -110,6 +110,8 @@ namespace Local_Search
             //initializes space array
             cells = new CellNode[NumOfRows, NumOfCol];
 
+            value = oldGrid.value;
+
             for (int row = 0; row < NumOfRows; row++)
             {
                 for (int col = 0; col < NumOfCol; col++)

@@ -17,11 +17,11 @@ namespace Local_Search
         public static void Main()
         {
 
-            //Console.Write("Enter n for the nxn matrix for task 4: ");
-            //Grid grid = new Grid(int.Parse(Console.ReadLine()));
-            //grid.RandomRestarts(50, 50);
-            //grid.HillClimb(50);
-            //grid.PrintGrid();
+            Console.Write("Enter n for the nxn matrix for task 4: ");
+            Grid grid = new Grid(int.Parse(Console.ReadLine()));
+            grid.RandomRestarts(5, 50);
+           // grid.HillClimb(5000);
+            grid.PrintGrid();
             
             LocalSearch ls = new LocalSearch();
             bool on = true;
