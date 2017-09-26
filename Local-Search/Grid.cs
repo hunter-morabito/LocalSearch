@@ -228,7 +228,7 @@ namespace Local_Search
                     if (testGrid.value >= 0)
                     {
                         //check to see if grid has improved
-                        if (testGrid.value <= value)
+                        if (testGrid.value >= value)
                         {
                             //copy cells from test grid to this grid
                             CopyGrid(ref testGrid);
@@ -238,7 +238,7 @@ namespace Local_Search
                 //grid is not solvable
                 else
                 {
-                    //check to see if new grid has improved
+                    //check to see if new grid has improved or gone out of 0
                     if (testGrid.value >= value)
                     {
                         //copy cells from test grid to this grid
@@ -246,6 +246,7 @@ namespace Local_Search
                     }
                 }
             }
+            PrintGrid();
         }
         #endregion
 
@@ -291,7 +292,7 @@ namespace Local_Search
                 if (testGrid.value >= 0)
                 {
                     //check to see if grid has improved
-                    if (testGrid.value <= value)
+                    if (testGrid.value >= value)
                     {
                         //copy cells from test grid to this grid
                         CopyGrid(ref testGrid);
@@ -306,7 +307,7 @@ namespace Local_Search
             //grid is not solvable
             else
             {
-                //check to see if new grid has improved
+                //check to see if new grid has improved out of 0
                 if (testGrid.value >= value)
                 {
                     //copy cells from test grid to this grid

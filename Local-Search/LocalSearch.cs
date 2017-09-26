@@ -20,9 +20,9 @@ namespace Local_Search
             Console.Write("Enter n for the nxn matrix for task 4: ");
             Grid grid = new Grid(int.Parse(Console.ReadLine()));
             //grid.RandomRestarts(3, 10);
-            // grid.HillClimb(5000);
+             grid.HillClimb(50);
             //grid.RandomWalk(50, .20);
-            grid.SimulatedAnnealing(50, 100, .9);
+            //grid.SimulatedAnnealing(50, 100, .9);
             grid.PrintGrid();
             
             LocalSearch ls = new LocalSearch();
