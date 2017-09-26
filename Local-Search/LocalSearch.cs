@@ -22,7 +22,8 @@ namespace Local_Search
             //grid.RandomRestarts(3, 10);
             // grid.HillClimb(5000);
             //grid.RandomWalk(50, .20);
-            //grid.PrintGrid();
+            grid.SimulatedAnnealing(50, 100, .9);
+            grid.PrintGrid();
             
             LocalSearch ls = new LocalSearch();
             bool on = true;

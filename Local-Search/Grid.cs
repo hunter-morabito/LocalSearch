@@ -120,7 +120,7 @@ namespace Local_Search
                 }
             }
             goalCoordinate = new Coordinate(NumOfRows - 1, NumOfCol - 1);
-           
+
         }
         #endregion
 
@@ -176,48 +176,39 @@ namespace Local_Search
                 testGrid.Evaluate();
                 UpdateGrid(ref testGrid, randomWalkProbability);
             }
-           
+
         }
-        
+
 
         //TASK 4
         public void RandomRestarts(int numberOfRestarts, int iterationsPerRestart)
         {
             //copy the current grid as the new test grid
             Grid testGrid = new Grid(this);
-            
-            //Console.WriteLine("Current Best Grid with value of " + value + ": ");
-            //PrintGrid();
-            
+
+
             //loop for as many restarts as user input
             for (int restartCounter = 0; restartCounter < numberOfRestarts; restartCounter++)
             {
-                Console.WriteLine("New Random Test Grid with value of " + testGrid.value + ": ");
-                testGrid.PrintGrid();
                 /* Run the Hill Climb Method on the New Random state grid
                  * If that random state test grid has a better value, then the 
                  * current grid will copy the cells in the random state grid
                  * into this grid object, and it will become the new best 
                  * valued grid.
                  */
-                testGrid.HillClimb(iterationsPerRestart, 0);
-                Console.WriteLine("Random Test Grid After Hill Climb with value of " + testGrid.value + ": ");
-                testGrid.PrintGrid();
+                testGrid.HillClimb(iterationsPerRestart);
                 //Update to the better valued grid
-                UpdateGrid(ref testGrid, 0);
+                UpdateGrid(ref testGrid);
 
                 //generate new random state test grid
                 testGrid = new Grid(NumOfRows);
-
-                Console.WriteLine("Current Best Grid with value of " + value + ": ");
-                PrintGrid();
-                Console.WriteLine();
             }
         }
 
         //TASK 5
         public void RandomWalk(int hillClimbIterations, double randomWalkProbability) => HillClimb(hillClimbIterations, randomWalkProbability);
 
+        private void UpdateGrid(ref Grid testGrid) => UpdateGrid(ref testGrid, 0);
         private void UpdateGrid(ref Grid testGrid, double randomWalkProbabilty)
         {
             /* If the randomWalkProbability is greater than the random number, then walk;
@@ -255,6 +246,100 @@ namespace Local_Search
                     }
                 }
             }
+        }
+        #endregion
+
+        #region Task 6 Functions
+        public void SimulatedAnnealing(int hillClimbIterations, double initialTemp, double tempertureDecayRate)
+        {
+            //loop
+            Grid testGrid;
+
+            double currentTemp = initialTemp;
+
+            //loops until given iterations hit
+            for (int i = 0; i < hillClimbIterations; i++)
+            {
+                Console.WriteLine("The Current Temp is " + currentTemp);
+                //make new grid copy
+                testGrid = new Grid(this);
+
+                //get a rand coordinate thats not the goal
+                Coordinate randomCoordinate = getRandCoordinate();
+
+                //loops until the cell in the new coordinate has a different moveNum
+                do
+                {
+                    testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
+                } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
+                testGrid.Evaluate();
+
+                //upgrade the grid depending on the results of the simulated anneal
+                UpdateGridSimulatedAnnealing(ref testGrid, currentTemp);
+
+                //decay the temperature
+                currentTemp = currentTemp * tempertureDecayRate;
+            }
+        }
+
+        private void UpdateGridSimulatedAnnealing(ref Grid testGrid, double currentTemp)
+        {
+
+            if (value >= 0)
+            {
+                //check to see if new grid is solvable
+                if (testGrid.value >= 0)
+                {
+                    //check to see if grid has improved
+                    if (testGrid.value <= value)
+                    {
+                        //copy cells from test grid to this grid
+                        CopyGrid(ref testGrid);
+                    }
+                    else if (PassedSimulatedAnneal(currentTemp, testGrid))
+                    {
+                        Console.WriteLine("Went DownHill!");
+                        CopyGrid(ref testGrid);
+                    }
+                }
+            }
+            //grid is not solvable
+            else
+            {
+                //check to see if new grid has improved
+                if (testGrid.value >= value)
+                {
+                    //copy cells from test grid to this grid
+                    CopyGrid(ref testGrid);
+                }
+                else if (PassedSimulatedAnneal(currentTemp, testGrid))
+                {
+                    Console.WriteLine("Went DownHill!");
+                    CopyGrid(ref testGrid);
+                }
+            }
+        }
+
+        //returns true if simulated anneal passed the probability
+        private bool PassedSimulatedAnneal(double currentTemp, Grid testGrid)
+        {
+            //function is exp( -(V(testGrid) - V(grid)) / currentTemp )
+            /* If the Random Number is less than the probability, then go downhill;
+             * If the temperature is high, then the probability value will be set high.
+             * If the probability is set high, then there is a greater chance of returning true and 
+             * Running Downhill.
+             * 
+             * lim (fn) = 0, meaning it is more likely to go downhill the higher the temperature
+             * T-> Infinity
+             * 
+             * lim (fn) = infinity, meaning it is less likely to go downhill the lower the temp
+             * T-> 0
+             */
+            double downhillProbability = Math.Exp(-(testGrid.value - value) / currentTemp);
+            //Console.WriteLine("The Numerator is " + numerator);
+            double randomNumber = rand.NextDouble();
+            Console.WriteLine("The Probability of Going Downhill is " + downhillProbability * 100 + "%, Scored a " + randomNumber * 100 + "%");
+            return (downhillProbability >= randomNumber) ? true : false;
         }
         #endregion
 
@@ -342,7 +427,6 @@ namespace Local_Search
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine();
             PrintValue();
         }
 
@@ -365,7 +449,6 @@ namespace Local_Search
                 Console.WriteLine();
             }
             PrintValue();
-
         }
 
         public void PrintValue()
@@ -373,6 +456,7 @@ namespace Local_Search
             Console.WriteLine("\nValue of the grid is: " + value);
         }
 
+        /*
         //used as grid from example in assignment
         public void makeExample1()
         {
@@ -434,7 +518,8 @@ namespace Local_Search
             this.cells[4, 3] = new CellNode(2, 4, 3);
             this.cells[4, 4] = new CellNode(0, 4, 4);
 
-        }
+        }*/
+
         #endregion
     }
 }
