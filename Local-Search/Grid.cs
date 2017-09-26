@@ -150,10 +150,10 @@ namespace Local_Search
         }
         #endregion
 
-        #region Task 3 & 4 Functions
-        
+        #region Task 3 & 4 & 5 Functions
         //TASK 3
-        public void HillClimb(int iterations)
+        public void HillClimb(int iterations) => HillClimb(iterations, 0);
+        private void HillClimb(int iterations, double randomWalkProbability)
         {
             //loop
             Grid testGrid;
@@ -174,13 +174,9 @@ namespace Local_Search
                     testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
                 } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
                 testGrid.Evaluate();
-                UpdateGrid(ref testGrid);
-
+                UpdateGrid(ref testGrid, randomWalkProbability);
             }
-            //USED FOR TESTING
-            //ToString();
-            //Console.WriteLine("Value of the grid after " + iterations + " iterations is: " + value);
-            //USED FOR TESTING
+           
         }
         
 
@@ -204,11 +200,11 @@ namespace Local_Search
                  * into this grid object, and it will become the new best 
                  * valued grid.
                  */
-                testGrid.HillClimb(iterationsPerRestart);
+                testGrid.HillClimb(iterationsPerRestart, 0);
                 Console.WriteLine("Random Test Grid After Hill Climb with value of " + testGrid.value + ": ");
                 testGrid.PrintGrid();
                 //Update to the better valued grid
-                UpdateGrid(ref testGrid);
+                UpdateGrid(ref testGrid, 0);
 
                 //generate new random state test grid
                 testGrid = new Grid(NumOfRows);
@@ -219,30 +215,44 @@ namespace Local_Search
             }
         }
 
-        private void UpdateGrid(ref Grid testGrid)
+        //TASK 5
+        public void RandomWalk(int hillClimbIterations, double randomWalkProbability) => HillClimb(hillClimbIterations, randomWalkProbability);
+
+        private void UpdateGrid(ref Grid testGrid, double randomWalkProbabilty)
         {
-            //check to see if grid is solvable
-            if (value >= 0)
+            /* If the randomWalkProbability is greater than the random number, then walk;
+             * The random number will never be below 0
+             */
+            if (rand.NextDouble() < randomWalkProbabilty)
             {
-                //check to see if new grid is solvable
-                if (testGrid.value >= 0)
+                CopyGrid(ref testGrid);
+            }
+            //no random walk occurred
+            else
+            {
+                //check to see if grid is solvable
+                if (value >= 0)
                 {
-                    //check to see if grid has improved
-                    if (testGrid.value <= value)
+                    //check to see if new grid is solvable
+                    if (testGrid.value >= 0)
+                    {
+                        //check to see if grid has improved
+                        if (testGrid.value <= value)
+                        {
+                            //copy cells from test grid to this grid
+                            CopyGrid(ref testGrid);
+                        }
+                    }
+                }
+                //grid is not solvable
+                else
+                {
+                    //check to see if new grid has improved
+                    if (testGrid.value >= value)
                     {
                         //copy cells from test grid to this grid
                         CopyGrid(ref testGrid);
                     }
-                }
-            }
-            //grid is not solvable
-            else
-            {
-                //check to see if new grid has improved
-                if (testGrid.value >= value)
-                {
-                    //copy cells from test grid to this grid
-                    CopyGrid(ref testGrid);
                 }
             }
         }
