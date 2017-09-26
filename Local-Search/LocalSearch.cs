@@ -17,11 +17,9 @@ namespace Local_Search
         public static void Main()
         {
 
-
             Console.Write("Enter n for the nxn matrix for task 4: ");
             Grid grid = new Grid(int.Parse(Console.ReadLine()));
             grid.RandomRestarts(50, 50);
-           
 
             LocalSearch ls = new LocalSearch();
             bool on = true;
