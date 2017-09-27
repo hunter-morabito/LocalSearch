@@ -9,6 +9,7 @@ namespace Local_Search
     class GeneticAlgorithm
     {
         List<Grid> parentGrids;
+        public Grid winner;
         //double averageVal;
 
         public GeneticAlgorithm() {
@@ -37,7 +38,8 @@ namespace Local_Search
             }
             Select();
             //PrintParents();
-            PrintWinner();
+            winner = parentGrids[parentGrids.Count - 1];
+            //PrintWinner();
             
         }
 

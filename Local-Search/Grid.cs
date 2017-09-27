@@ -213,7 +213,7 @@ namespace Local_Search
             /* If the randomWalkProbability is greater than the random number, then walk;
              * The random number will never be below 0
              */
-            if (randomWalkProbabilty > rand.NextDouble())
+            if (randomWalkProbabilty >= rand.NextDouble())
             {
                 CopyGrid(ref testGrid);
             }
@@ -450,9 +450,6 @@ namespace Local_Search
         {
             Console.WriteLine("\nValue of the grid is: " + value);
         }
-
-       
-
         #endregion
     }
 }

@@ -18,20 +18,25 @@ namespace Local_Search
         public static void Main()
         {
             rand = new Random();
-            Console.Write("Enter n for the nxn matrix for task 4: ");
-            Grid grid = new Grid(int.Parse(Console.ReadLine()), rand);
 
-
-            GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
-            geneticAlgorithm.RunGeneticAlgorithm(11, 20, 20);
-
-            int.Parse(Console.ReadLine());
             LocalSearch ls = new LocalSearch();
+
+            //double average = 0;
+            //for (int i = 0; i < 50; i++)
+            //{
+            //    GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
+            //    geneticAlgorithm.RunGeneticAlgorithm(5, 10, 20);
+            //    average += geneticAlgorithm.winner.value;
+            //}
+
+            //average = average / 50;
+            //Console.WriteLine(average);
+
             bool on = true;
             while (on)
             {
-				Console.WriteLine("enter task number: ");
-				int task = int.Parse(Console.ReadLine());
+                Console.WriteLine("enter task number: ");
+                int task = int.Parse(Console.ReadLine());
                 switch (task)
                 {
                     case 0:
@@ -39,51 +44,111 @@ namespace Local_Search
                         on = false;
                         break;
                     case 1:
-                        Task1().PrintGrid();
+                        if ((ls.grid = Task1()) != null)
+                        {
+                            ls.grid.PrintGrid();
+                            break;
+                        }
+
+                        Console.WriteLine("returning to task selection... ");
                         break;
                     case 2:
+                        Console.WriteLine("Puzzle Evaluation");
                         ls.grid = Task2();
                         Console.WriteLine("value of grid is: " + ls.grid.Evaluate());
                         ls.grid.PrintDepth();
                         break;
                     case 3:
-                        Console.WriteLine("enter 0 to implement on a randomly generated grid");
-                        Console.WriteLine("enter 1 to implement on a file generated grid");
-                        int opt;
-                        if (int.TryParse(Console.ReadLine(), out opt))
-                        {
-                            if (opt == 0) {
-                                ls.grid = Task1();
-                            } else if (opt == 1) {
-                                ls.grid = Task2();
-                            } else {
-                                Console.WriteLine("invalid number; returning to task selection...");
-                                break;
-                            }
-                        }
-                        int i;
-                        Console.Write("enter # of iterations (>=50) for hill climb: ");
-                        if ((i = int.Parse(Console.ReadLine())) >= 50)
-                        {
-                            ls.grid.HillClimb(i);
-                            ls.grid.PrintGrid();
-                        } else {
-                            Console.WriteLine("invalid number; returning to task selection...");
-                            break;
-                        }
+                        Console.WriteLine("Basic Hill Climb");
+                        ls.grid = Task1();
+                        Console.WriteLine("input value for iterations (>=1): ");
+                        int i = int.Parse(Console.ReadLine());
+                        var watch0 = System.Diagnostics.Stopwatch.StartNew();
+                        ls.grid.HillClimb(i);
+                        watch0.Stop();
+                        Console.WriteLine("time: " + watch0.ElapsedMilliseconds + " milliseconds");
+                        ls.grid.PrintGrid();
+
 
                         break;
                     case 4:
-                        
+                        Console.WriteLine("Basic Hill Climb with Random Restart");
+                        ls.grid = Task1();
+                        Console.WriteLine("=== Before Hill Function ===");
+                        ls.grid.PrintGrid();
+                        Console.WriteLine("input value for # of restarts");
+
+                        int numRestart = int.Parse(Console.ReadLine());
+                        Console.WriteLine("input value for # of iterations per restart: ");
+                        int numIterationsPer = int.Parse(Console.ReadLine());
+                        var watch1 = System.Diagnostics.Stopwatch.StartNew();
+                        ls.grid.RandomRestarts(numRestart, numIterationsPer);
+                        watch1.Stop();
+                        Console.WriteLine("=== After Hill Function ===");
+                        Console.WriteLine("time: " + watch1.ElapsedMilliseconds + " milliseconds");
+                        ls.grid.PrintGrid();
+
+                        break;
                     case 5:
+                        Console.WriteLine("Basic Hill Climb with Random walk");
+                        ls.grid = Task1();
+                        Console.WriteLine("=== Before Random Walk ===");
+                        ls.grid.PrintGrid();
+                        Console.WriteLine("input value for r, the probability (0 <= r <= 1): ");
+                        double r = double.Parse(Console.ReadLine());
+                        Console.WriteLine("input number of times to run Hill Climb function: ");
+                        int numOfHill = int.Parse(Console.ReadLine());
+                        if ((r >= 0 && r <= 1) && (numOfHill >= 1))
+                        {
+                            var watch2 = System.Diagnostics.Stopwatch.StartNew();
+                            ls.grid.RandomWalk(numOfHill, r);
+                            watch2.Stop();
+                            Console.WriteLine("=== After Random Walk ===");
+                            Console.WriteLine("time: " + watch2.ElapsedMilliseconds + " milliseconds");
+                            ls.grid.PrintGrid();
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     case 6:
+                        ls.grid = Task1();
+                        Console.WriteLine("=== Before Simulated Annealing ===");
+                        ls.grid.PrintGrid();
+
+                        Console.WriteLine("input number for Hill Clim function iterations: ");
+                        int numOfHill2 = int.Parse(Console.ReadLine());
+                        Console.WriteLine("input initial temperature: ");
+                        double initTemp = double.Parse(Console.ReadLine());
+                        Console.WriteLine("input temperature decay rate, r: ");
+                        double r1 = double.Parse(Console.ReadLine());
+
+                        var watch3 = System.Diagnostics.Stopwatch.StartNew();
+                        ls.grid.SimulatedAnnealing(numOfHill2, initTemp, r1);
+                        watch3.Stop();
+                        Console.WriteLine("=== After Simulated Annealing ===");
+                        Console.WriteLine("time: " + watch3.ElapsedMilliseconds + " milliseconds");
+                        ls.grid.PrintGrid();
+                        break;
                     case 7:
+                        Console.WriteLine("GENETIC ALGORITHM");
+                        Console.WriteLine("Enter # for nxn matrix: ");
+                        int n = int.Parse(Console.ReadLine());
+                        Check(n);
+                        Console.WriteLine("Enter Start Sample Size: ");
+                        int sampleSize = int.Parse(Console.ReadLine());
+                        Console.WriteLine("Enter Number of Iterations through Genetic Algorithm:");
+                        int iterations = int.Parse(Console.ReadLine());
+                        GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
+                        geneticAlgorithm.RunGeneticAlgorithm(n, sampleSize, iterations);
+                        break;
                     default:
                         Console.Error.WriteLine("task # must be between 0-7; 0 is to terminate");
                         break;
                 }
             }
-           
+
         }
 
 
@@ -101,14 +166,14 @@ namespace Local_Search
             Console.WriteLine("Enter # for nxn matrix: ");
             int n = int.Parse(Console.ReadLine());
             Check(n);
-            
+
             return new Grid(n, rand);
         }
 
         public static Grid Task2()
         {
-			Console.WriteLine("Enter the name of the text file: ");
-			string name = Console.ReadLine();
+            Console.WriteLine("Enter the name of the text file: ");
+            string name = Console.ReadLine();
 
             //Josh's Path for Files
             /*System.IO.StreamReader file =
@@ -116,8 +181,8 @@ namespace Local_Search
 
             //Hunter's Path for files
             StreamReader file = new StreamReader(Directory.GetCurrentDirectory() + "\\" + name);
-            
+
             return new Grid(file);
-		}
+        }
     }
 }
