@@ -21,16 +21,6 @@ namespace Local_Search
 
             LocalSearch ls = new LocalSearch();
 
-            //double average = 0;
-            //for (int i = 0; i < 50; i++)
-            //{
-            //    GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
-            //    geneticAlgorithm.RunGeneticAlgorithm(5, 10, 20);
-            //    average += geneticAlgorithm.winner.value;
-            //}
-
-            //average = average / 50;
-            //Console.WriteLine(average);
 
             bool on = true;
             while (on)
