@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Local_Search
 {
+    /// <summary>
+    /// This Class holds the row, col coordinates for a space on a grid
+    /// </summary>
     class Coordinate
     {
         public int row;
@@ -16,15 +19,16 @@ namespace Local_Search
             this.row = row;
             this.col = col;
         }
-            
-        public void ToString()
+
+        
+        override public string ToString()
         {
-             Console.WriteLine("(" + row + "," + col + ")");
+            return "(" + row + "," + col + ")";
         }
 
         public bool Equals(Coordinate coordinate)
         {
-            if(row == coordinate.row && col == coordinate.col) 
+            if (row == coordinate.row && col == coordinate.col)
                 return true;
             return false;
         }

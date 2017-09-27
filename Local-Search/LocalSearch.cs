@@ -20,7 +20,7 @@ namespace Local_Search
             rand = new Random();
 
             LocalSearch ls = new LocalSearch();
-
+           
 
             bool on = true;
             while (on)
@@ -166,11 +166,11 @@ namespace Local_Search
             string name = Console.ReadLine();
 
             //Josh's Path for Files
-            /*System.IO.StreamReader file =
-					  new System.IO.StreamReader("../../../../../Downloads/" + name);*/
+            System.IO.StreamReader file =
+					  new System.IO.StreamReader("../../../../../Downloads/" + name);
 
             //Hunter's Path for files
-            StreamReader file = new StreamReader(Directory.GetCurrentDirectory() + "\\" + name);
+            //StreamReader file = new StreamReader(Directory.GetCurrentDirectory() + "\\" + name);
 
             return new Grid(file);
         }

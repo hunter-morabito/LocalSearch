@@ -19,7 +19,8 @@ namespace Local_Search
         private Random rand;
 
         #region Constructors
-        public Grid() {
+        public Grid()
+        {
             cells = new CellNode[NumOfRows, NumOfCol];
         }
 
@@ -150,7 +151,13 @@ namespace Local_Search
         #endregion
 
         #region Task 3 & 4 & 5 Functions
-        //TASK 3
+        //TASK 3 
+        /// <summary>
+        /// Hill climb will alter a non-goal cell's moveNum to a different moveNum and then evaluate that grid
+        /// If that grid is of a higher value,  then the change will be accepted and the grid will update to 
+        /// changed grid
+        /// </summary>
+        /// <param name="iterations">Enter number of Iterations per HillClimb</param>
         public void HillClimb(int iterations) => HillClimb(iterations, 0);
         private void HillClimb(int iterations, double randomWalkProbability)
         {
@@ -170,16 +177,24 @@ namespace Local_Search
                 //loops until the cell in the new coordinate has a different moveNum
                 do
                 {
+                    //get new moveNum
                     testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum = getRandMoveNum(randomCoordinate.row, randomCoordinate.col);
+                    //check to make sure movenum is not currently held in given coordinate
                 } while (testGrid.cells[randomCoordinate.row, randomCoordinate.col].moveNum == cells[randomCoordinate.row, randomCoordinate.col].moveNum);
+                //set value to new test grid
                 testGrid.Evaluate();
+                //update grid given both values
                 UpdateGrid(ref testGrid, randomWalkProbability);
             }
-
         }
 
 
         //TASK 4
+        /// <summary>
+        /// Random restarts is a loop around hill climb with random grids trying to get the best value
+        /// </summary>
+        /// <param name="numberOfRestarts">Enter the number of times you would like Hill Climb to restart</param>
+        /// <param name="iterationsPerRestart">Enter Number of iterations per Hill Climb</param>
         public void RandomRestarts(int numberOfRestarts, int iterationsPerRestart)
         {
             //copy the current grid as the new test grid
@@ -198,15 +213,21 @@ namespace Local_Search
                 testGrid.HillClimb(iterationsPerRestart);
                 //Update to the better valued grid
                 UpdateGrid(ref testGrid);
-                PrintGrid();
+                //PrintGrid();
                 //generate new random state test grid
                 testGrid = new Grid(NumOfRows, LocalSearch.rand);
             }
         }
 
         //TASK 5
+        /// <summary>
+        /// Random walk is the same steps as HillClimb(), just with an added probability the grid does not update
+        /// </summary>
+        /// <param name="hillClimbIterations">Enter number of iterations per Hill Climb</param>
+        /// <param name="randomWalkProbability">Enter the probability (0 - 1) that the Hill Climb change will not be accepted</param>
         public void RandomWalk(int hillClimbIterations, double randomWalkProbability) => HillClimb(hillClimbIterations, randomWalkProbability);
 
+        //if calling just UpdateGrid, forward to other function with a random walk probability of '0'
         private void UpdateGrid(ref Grid testGrid) => UpdateGrid(ref testGrid, 0);
         private void UpdateGrid(ref Grid testGrid, double randomWalkProbabilty)
         {
@@ -231,6 +252,7 @@ namespace Local_Search
                         {
                             //copy cells from test grid to this grid
                             CopyGrid(ref testGrid);
+
                         }
                     }
                 }
@@ -245,11 +267,20 @@ namespace Local_Search
                     }
                 }
             }
-            //PrintValue();
         }
         #endregion
 
         #region Task 6 Functions
+        /// <summary>
+        /// Simulated annealing process. This will run Hill Climb and then make a more informed decision as to whether
+        /// or not to accept a downhill change or not.
+        /// It uses the formula exp(-(Value(testgrid) - Value(currentgrid)) / Temperature)
+        /// Through each iteration the temperature will begin to cool through a given decay rate
+        /// As the iterations increase, the chance of a random walk will fall
+        /// </summary>
+        /// <param name="hillClimbIterations">Enter number of Iterations per Hill climb</param>
+        /// <param name="initialTemp">Enter the initial temperature to begin at</param>
+        /// <param name="tempertureDecayRate">Enter the rate of decay the temp decreases at per iteration</param>
         public void SimulatedAnnealing(int hillClimbIterations, double initialTemp, double tempertureDecayRate)
         {
             //loop
@@ -294,9 +325,11 @@ namespace Local_Search
                     {
                         //copy cells from test grid to this grid
                         CopyGrid(ref testGrid);
+
                     }
                     else if (PassedSimulatedAnneal(currentTemp, testGrid))
                     {
+                        //copy cells from test grid to this grid
                         CopyGrid(ref testGrid);
                     }
                 }
@@ -312,28 +345,35 @@ namespace Local_Search
                 }
                 else if (PassedSimulatedAnneal(currentTemp, testGrid))
                 {
+                    //copy cells from test grid to this grid
                     CopyGrid(ref testGrid);
                 }
             }
         }
 
-        //returns true if simulated anneal passed the probability
+        /// <summary>
+        /// Returns true if simulated anneal passed the probability
+        /// Function is exp( -(V(testGrid) - V(grid)) / currentTemp )
+        /// If the Random Number is less than the probability, then go downhill;
+        /// If the temperature is high, then the probability value will be set high.
+        /// If the probability is set high, then there is a greater chance of returning true and 
+        /// Running Downhill.
+        /// 
+        /// lim (fn) = 0, meaning it is more likely to go downhill the higher the temperature
+        /// T-> Infinity
+        /// 
+        /// lim (fn) = infinity, meaning it is less likely to go downhill the lower the temp
+        /// T-> 0
+        /// </summary>
+        /// <param name="currentTemp"></param>
+        /// <param name="testGrid"></param>
+        /// <returns></returns>
         private bool PassedSimulatedAnneal(double currentTemp, Grid testGrid)
         {
-            //function is exp( -(V(testGrid) - V(grid)) / currentTemp )
-            /* If the Random Number is less than the probability, then go downhill;
-             * If the temperature is high, then the probability value will be set high.
-             * If the probability is set high, then there is a greater chance of returning true and 
-             * Running Downhill.
-             * 
-             * lim (fn) = 0, meaning it is more likely to go downhill the higher the temperature
-             * T-> Infinity
-             * 
-             * lim (fn) = infinity, meaning it is less likely to go downhill the lower the temp
-             * T-> 0
-             */
+            //gets the probability of a downhill move given the formula
             double downhillProbability = Math.Exp(-(testGrid.value - value) / currentTemp);
             double randomNumber = rand.NextDouble();
+            //if the probability is higher than the random number, then move downhill
             return (downhillProbability >= randomNumber) ? true : false;
         }
         #endregion

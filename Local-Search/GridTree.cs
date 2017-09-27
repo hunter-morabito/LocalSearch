@@ -82,11 +82,8 @@ namespace Local_Search
                 }
             }//end loop through queue
 
-            //PrintBinaryArray(binaryArray);
-
             //recursive treverse and assign depth
             AssignDepth(root, 0);
-            
         }
 
         //Assigns each node in the grid its depth on the tree
@@ -121,6 +118,7 @@ namespace Local_Search
             return binaryArray[row, col] == 1 ? true : false;
         }
 
+        //prints current binary array
         private void PrintBinaryArray(int[,] ba)
         {
             Console.WriteLine("Binary Array:");
