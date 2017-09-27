@@ -13,18 +13,19 @@ namespace Local_Search
     {
 
         Grid grid;
+        public static Random rand;
 
         public static void Main()
         {
-
+            rand = new Random();
             Console.Write("Enter n for the nxn matrix for task 4: ");
-            Grid grid = new Grid(int.Parse(Console.ReadLine()));
-            //grid.RandomRestarts(3, 10);
-             grid.HillClimb(50);
-            //grid.RandomWalk(50, .20);
-            //grid.SimulatedAnnealing(50, 100, .9);
-            grid.PrintGrid();
-            
+            Grid grid = new Grid(int.Parse(Console.ReadLine()), rand);
+
+
+            GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
+            geneticAlgorithm.RunGeneticAlgorithm(11, 20, 20);
+
+            int.Parse(Console.ReadLine());
             LocalSearch ls = new LocalSearch();
             bool on = true;
             while (on)
@@ -100,8 +101,8 @@ namespace Local_Search
             Console.WriteLine("Enter # for nxn matrix: ");
             int n = int.Parse(Console.ReadLine());
             Check(n);
-
-            return new Grid(n);
+            
+            return new Grid(n, rand);
         }
 
         public static Grid Task2()

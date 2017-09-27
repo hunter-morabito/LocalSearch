@@ -19,12 +19,14 @@ namespace Local_Search
         private Random rand;
 
         #region Constructors
-        public Grid() { }
+        public Grid() {
+            cells = new CellNode[NumOfRows, NumOfCol];
+        }
 
         //Grid construct
-        public Grid(int n)
+        public Grid(int n, Random rand)
         {
-            rand = new Random();
+            this.rand = rand;
             NumOfRows = n;
             NumOfCol = n;
 
@@ -80,9 +82,6 @@ namespace Local_Search
                     { // if the current line's spot is a number, then we add that number into the corresponding cell. 
                         int moveNum = int.Parse(line[j].ToString());
                         cells[count, col] = new CellNode(moveNum, count, col);
-                        //Console.WriteLine("number is " + moveNum);
-                        //Console.WriteLine("row is: " + count + " and col is: " + c);
-                        //Console.Write(cells[count, c].moveNum + " ");
                         // when the new CellNode instance is created, it prints properly, but in LocalSearch.cs, it doesn't print at all..
                         col++;
                     }
@@ -199,9 +198,9 @@ namespace Local_Search
                 testGrid.HillClimb(iterationsPerRestart);
                 //Update to the better valued grid
                 UpdateGrid(ref testGrid);
-
+                PrintGrid();
                 //generate new random state test grid
-                testGrid = new Grid(NumOfRows);
+                testGrid = new Grid(NumOfRows, LocalSearch.rand);
             }
         }
 
@@ -214,7 +213,7 @@ namespace Local_Search
             /* If the randomWalkProbability is greater than the random number, then walk;
              * The random number will never be below 0
              */
-            if (rand.NextDouble() < randomWalkProbabilty)
+            if (randomWalkProbabilty > rand.NextDouble())
             {
                 CopyGrid(ref testGrid);
             }
@@ -246,7 +245,7 @@ namespace Local_Search
                     }
                 }
             }
-            PrintGrid();
+            //PrintValue();
         }
         #endregion
 
@@ -261,7 +260,6 @@ namespace Local_Search
             //loops until given iterations hit
             for (int i = 0; i < hillClimbIterations; i++)
             {
-                Console.WriteLine("The Current Temp is " + currentTemp);
                 //make new grid copy
                 testGrid = new Grid(this);
 
@@ -299,7 +297,6 @@ namespace Local_Search
                     }
                     else if (PassedSimulatedAnneal(currentTemp, testGrid))
                     {
-                        Console.WriteLine("Went DownHill!");
                         CopyGrid(ref testGrid);
                     }
                 }
@@ -315,7 +312,6 @@ namespace Local_Search
                 }
                 else if (PassedSimulatedAnneal(currentTemp, testGrid))
                 {
-                    Console.WriteLine("Went DownHill!");
                     CopyGrid(ref testGrid);
                 }
             }
@@ -337,9 +333,7 @@ namespace Local_Search
              * T-> 0
              */
             double downhillProbability = Math.Exp(-(testGrid.value - value) / currentTemp);
-            //Console.WriteLine("The Numerator is " + numerator);
             double randomNumber = rand.NextDouble();
-            Console.WriteLine("The Probability of Going Downhill is " + downhillProbability * 100 + "%, Scored a " + randomNumber * 100 + "%");
             return (downhillProbability >= randomNumber) ? true : false;
         }
         #endregion
@@ -449,7 +443,7 @@ namespace Local_Search
                 }
                 Console.WriteLine();
             }
-            PrintValue();
+            //PrintValue();
         }
 
         public void PrintValue()
@@ -457,69 +451,7 @@ namespace Local_Search
             Console.WriteLine("\nValue of the grid is: " + value);
         }
 
-        /*
-        //used as grid from example in assignment
-        public void makeExample1()
-        {
-
-            this.cells[0, 0] = new CellNode(2, 0, 0);
-            this.cells[0, 1] = new CellNode(2, 0, 1);
-            this.cells[0, 2] = new CellNode(2, 0, 2);
-            this.cells[0, 3] = new CellNode(4, 0, 3);
-            this.cells[0, 4] = new CellNode(3, 0, 4);
-            this.cells[1, 0] = new CellNode(2, 1, 0);
-            this.cells[1, 1] = new CellNode(2, 1, 1);
-            this.cells[1, 2] = new CellNode(3, 1, 2);
-            this.cells[1, 3] = new CellNode(3, 1, 3);
-            this.cells[1, 4] = new CellNode(3, 1, 4);
-            this.cells[2, 0] = new CellNode(3, 2, 0);
-            this.cells[2, 1] = new CellNode(3, 2, 1);
-            this.cells[2, 2] = new CellNode(2, 2, 2);
-            this.cells[2, 3] = new CellNode(3, 2, 3);
-            this.cells[2, 4] = new CellNode(3, 2, 4);
-            this.cells[3, 0] = new CellNode(4, 3, 0);
-            this.cells[3, 1] = new CellNode(3, 3, 1);
-            this.cells[3, 2] = new CellNode(2, 3, 2);
-            this.cells[3, 3] = new CellNode(2, 3, 3);
-            this.cells[3, 4] = new CellNode(2, 3, 4);
-            this.cells[4, 0] = new CellNode(1, 4, 0);
-            this.cells[4, 1] = new CellNode(2, 4, 1);
-            this.cells[4, 2] = new CellNode(1, 4, 2);
-            this.cells[4, 3] = new CellNode(4, 4, 3);
-            this.cells[4, 4] = new CellNode(0, 4, 4);
-
-        }
-        //used as grid from example in assignment
-        public void makeExample2()
-        {
-
-            this.cells[0, 0] = new CellNode(3, 0, 0);
-            this.cells[0, 1] = new CellNode(3, 0, 1);
-            this.cells[0, 2] = new CellNode(2, 0, 2);
-            this.cells[0, 3] = new CellNode(4, 0, 3);
-            this.cells[0, 4] = new CellNode(3, 0, 4);
-            this.cells[1, 0] = new CellNode(2, 1, 0);
-            this.cells[1, 1] = new CellNode(2, 1, 1);
-            this.cells[1, 2] = new CellNode(2, 1, 2);
-            this.cells[1, 3] = new CellNode(1, 1, 3);
-            this.cells[1, 4] = new CellNode(1, 1, 4);
-            this.cells[2, 0] = new CellNode(4, 2, 0);
-            this.cells[2, 1] = new CellNode(3, 2, 1);
-            this.cells[2, 2] = new CellNode(1, 2, 2);
-            this.cells[2, 3] = new CellNode(3, 2, 3);
-            this.cells[2, 4] = new CellNode(4, 2, 4);
-            this.cells[3, 0] = new CellNode(2, 3, 0);
-            this.cells[3, 1] = new CellNode(3, 3, 1);
-            this.cells[3, 2] = new CellNode(1, 3, 2);
-            this.cells[3, 3] = new CellNode(1, 3, 3);
-            this.cells[3, 4] = new CellNode(3, 3, 4);
-            this.cells[4, 0] = new CellNode(1, 4, 0);
-            this.cells[4, 1] = new CellNode(1, 4, 1);
-            this.cells[4, 2] = new CellNode(3, 4, 2);
-            this.cells[4, 3] = new CellNode(2, 4, 3);
-            this.cells[4, 4] = new CellNode(0, 4, 4);
-
-        }*/
+       
 
         #endregion
     }
