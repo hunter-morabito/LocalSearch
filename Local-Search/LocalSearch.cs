@@ -165,12 +165,7 @@ namespace Local_Search
             Console.WriteLine("Enter the name of the text file: ");
             string name = Console.ReadLine();
 
-            //Josh's Path for Files
-            System.IO.StreamReader file =
-					  new System.IO.StreamReader("../../../../../Downloads/" + name);
-
-            //Hunter's Path for files
-            //StreamReader file = new StreamReader(Directory.GetCurrentDirectory() + "\\" + name);
+            StreamReader file = new StreamReader(Directory.GetCurrentDirectory() + "\\" + name);
 
             return new Grid(file);
         }

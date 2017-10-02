@@ -189,7 +189,7 @@ namespace Local_Search
         }
 
 
-        //TASK 4
+        // TASK 4
         /// <summary>
         /// Random restarts is a loop around hill climb with random grids trying to get the best value
         /// </summary>
